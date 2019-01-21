@@ -1,0 +1,12 @@
+(require 2htdp/image)
+
+;(define WIDTH 400)
+;(define HEIGHT 600)
+
+;(* WIDTH HEIGHT)
+
+(define COLOURGRADIENT .)
+
+(define RGRADIENT (rotate -10 COLOURGRADIENT))
+
+(define LGRADIENT (rotate 10 COLOURGRADIENT))

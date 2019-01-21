@@ -1,0 +1,32 @@
+(require 2htdp/image)
+
+;; compare-images-starter.rkt
+
+; 
+; PROBLEM:
+; 
+; Based on the two constants provided, write three expressions to determine whether: 
+; 
+; 1) IMAGE1 is taller than IMAGE2
+; 2) IMAGE1 is narrower than IMAGE2
+; 3) IMAGE1 has both the same width AND height as IMAGE2
+; 
+
+
+(define IMAGE1 (rectangle 10 15 "solid" "red"))
+(define IMAGE2 (rectangle 15 10 "solid" "red"))
+
+IMAGE1
+
+(if (> (image-height IMAGE1) (image-height IMAGE2))
+    "bigger"
+    "smaller")
+
+(if (< (image-width IMAGE1) (image-width IMAGE2))
+    "smaller"
+    "bigger")
+
+(if (and (= (image-height IMAGE1) (image-height IMAGE2))
+         (= (image-width IMAGE1) (image-width IMAGE2)))
+          "equal"
+          "not equal")

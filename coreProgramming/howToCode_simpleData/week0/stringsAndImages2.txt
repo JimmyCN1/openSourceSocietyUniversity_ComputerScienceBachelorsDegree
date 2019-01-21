@@ -1,0 +1,18 @@
+(require 2htdp/image)
+
+;(circle 10 "solid" "red")
+;(rectangle 30 60 "outline" "blue")
+
+;(text "hello" 24 "orange")
+
+(overlay (circle 10 "solid" "red")
+       (circle 20 "solid" "yellow")
+       (circle 30 "solid" "green"))
+
+(overlay/offset (overlay/offset (overlay/offset (triangle 80 "outline" "black")
+                                                0 15
+                                                (ellipse 40 20 "outline" "black"))
+                                0 15
+                                (ellipse 7 7 "solid" "white"))
+                0 15
+                (ellipse 20 20 "solid" "black"))

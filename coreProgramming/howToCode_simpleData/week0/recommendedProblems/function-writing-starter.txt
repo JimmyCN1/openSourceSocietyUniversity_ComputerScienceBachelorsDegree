@@ -1,0 +1,16 @@
+
+;; function-writing-starter.rkt
+
+; 
+; PROBLEM:
+; 
+; Write a function that consumes two numbers and produces the larger of the two. 
+; 
+
+
+(define (biggerNum x y)
+  (if (> x y)
+      x
+      y))
+
+(biggerNum 20 13)
