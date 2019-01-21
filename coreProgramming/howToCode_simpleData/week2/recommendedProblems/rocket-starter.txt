@@ -1,0 +1,66 @@
+
+;; rocket-starter.rkt
+
+;; =================
+;; Data definitions:
+
+;; RocketDescent is one of:
+;;  - Integer[0]
+;;  - Integer[1, 100]
+;; interp. the number of kilometres from the earth's surface (0 is the ground)
+(define D1  0)    ; landed on the surface
+(define D2 56)    ; 56 kilometers from the surface
+
+#; (define (fn-for-RocketDescent km)
+     (cond [(= 0) (... km)]
+           [(<= 1 km 100) (... km)]))
+
+;; Template rules used:
+;;  - atomic non-distinct: Integer[0]
+;;  - atomic non-distinct: Integer[1, 100]
+
+
+; 
+; PROBLEM A:
+; 
+; You are designing a program to track a rocket's journey as it descends 
+; 100 kilometers to Earth. You are only interested in the descent from 
+; 100 kilometers to touchdown. Once the rocket has landed it is done.
+; 
+; Design a data definition to represent the rocket's remaining descent. 
+; Call it RocketDescent.
+; 
+
+
+;; =================
+;; Functions:
+
+; 
+; PROBLEM B:
+; 
+; Design a function that will output the rocket's remaining descent distance 
+; in a short string that can be broadcast on Twitter. 
+; When the descent is over, the message should be "The rocket has landed!".
+; Call your function rocket-descent-to-msg.
+; 
+
+
+;; Distance -> String
+;; produce a string of the remaining descent distance or "The rocket has landed!" when the descent distance is at 0
+(check-expect (rocket-descent-to-msg 0) "The rocket has landed!")
+(check-expect (rocket-descent-to-msg 50) "50 kilometers remaining!")
+(check-expect (rocket-descent-to-msg 100) "100 kilometers remaining!")
+
+
+;(define (rocket-descent-to-msg km) "")   ;stub
+
+#;
+(define (Journey km)                 ;template
+     (cond [(= 0) (... km)]
+           [(<= 1 km 100) (... km)]))
+
+(define (rocket-descent-to-msg km)
+     (cond [(and (<= 1 km) (<= km 100))
+            (string-append (number->string km) " kilometers remaining!")]
+           [(= 0)
+            "The rocket has landed!"]))

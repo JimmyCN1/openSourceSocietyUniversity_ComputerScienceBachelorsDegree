@@ -1,0 +1,144 @@
+;; HtDD Design Quiz
+
+;; Age is Natural
+;; interp. the age of a person in years
+(define A0 18)
+(define A1 25)
+
+#;
+(define (fn-for-age a)
+  (... a))
+
+;; Template rules used:
+;; - atomic non-distinct: Natural
+
+
+; Problem 1:
+; 
+; Consider the above data definition for the age of a person.
+; 
+; Design a function called teenager? that determines whether a person
+; of a particular age is a teenager (i.e., between the ages of 13 and 19).
+
+
+;; Age -> Boolean
+;; produces true if the teenagers age is between 13 and 19
+(check-expect (teenager? 10) false)
+(check-expect (teenager? 13) true)
+(check-expect (teenager? 16) true)
+(check-expect (teenager? 19) true)
+(check-expect (teenager? 21) false)
+
+
+; (define (teenager? a) false)    ;stub
+#;
+(define (teenager? a)             ;template
+  (case [(... a)]
+        [(... a)]
+        [(... a)]))
+
+(define (teenager? a)
+  (and (<= 13 a) (<= a 19)))
+
+
+; Problem 2:
+; 
+; Design a data definition called MonthAge to represent a person's age
+; in months.
+
+
+;; MonthAge is Natural
+;; interp. number of months a person has lived
+
+(define AGE 30)   ; person is 30 months old
+
+#;
+(define (fn-for-MonthAge a)
+  (... a))
+
+;; Template rules used:
+;;  - atomic non-distinct: Natural
+
+
+
+; Problem 3:
+; 
+; Design a function called months-old that takes a person's age in years 
+; and yields that person's age in months.
+; 
+
+
+;; Natural -> Natural
+;; given a person age in years, produce their age in months
+(check-expect (AgeM 2) 24)
+(check-expect (AgeM 4) 48)
+
+
+;(define (AgeM a) 0)    ;stub
+
+#;
+;template taken from MonthAge
+(define (AgeM a)
+  (... a))
+
+(define (AgeM a)
+  (* a 12))
+
+
+; Problem 4:
+; 
+; Consider a video game where you need to represent the health of your
+; character. The only thing that matters about their health is:
+; 
+;   - if they are dead (which is shockingly poor health)
+;   - if they are alive then they can have 0 or more extra lives
+; 
+; Design a data definition called Health to represent the health of your
+; character.
+; 
+; Design a function called increase-health that allows you to increase the
+; lives of a character.  The function should only increase the lives
+; of the character if the character is not dead, otherwise the character
+; remains dead.
+
+
+;; Data-Definition (Health)
+
+;; Health is one of:
+;;  - false
+;;  - Number
+;; interp. false means no health, number represents number of lives
+
+(define H0 false)
+(define H1 3)
+
+#;
+(define (fn-for-health h)
+  (cond [(false? h) (...)]
+        [else (...)]))
+
+;; Template rules used:
+;;  - one of: 2 cases
+;;  - atomic distinct: false
+;;  - atomic non-distinct: Number
+
+
+;; Function-Definition (increase-health)
+
+;; Health -> Health
+;; increase life by one if the charachter is not already dead
+
+(check-expect (increase-health false) false)
+(check-expect (increase-health 1) 2)
+(check-expect (increase-health 6) 7)
+
+;(define (increase-health h) false)    ;stub
+
+#;
+(define (increase-health h)              ; template taken from Health
+  (cond [(false? h) (... h)]
+        [else (...)]))
+
+(define (increase-health h)
+  (cond [(false? h) false]
+        [else (+ h 1)]))

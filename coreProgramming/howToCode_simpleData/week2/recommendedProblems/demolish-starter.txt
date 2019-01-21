@@ -1,0 +1,62 @@
+
+;; demolish-starter.rkt
+
+;; =================
+;; Data definitions:
+
+; 
+; PROBLEM A:
+; 
+; You are assigned to develop a system that will classify 
+; buildings in downtown Vancouver based on how old they are. 
+; According to city guidelines, there are three different classification levels:
+; new, old, and heritage.
+; 
+; Design a data definition to represent these classification levels. 
+; Call it BuildingStatus.
+; 
+
+
+;; BuildingStatus is Integer[0, 300]
+;; interp. the number of years a building in downtown Vancouver has stood
+;;  - Integer[0,   100]    ; new
+;;  - Integer[101, 200]    ; old
+;;  - Integer[201, 300]    ; heritage
+
+(define A1   5)  ; new
+(define A2 105)  ; old
+(define A3 205)  ; heritage
+
+#;
+(define (fn-for-type-BuildingStatus a)
+  cond([(<= 0 a 100) false]
+       [(<= 101 a 200) true]
+       [(<= 201 a 300) false]))
+
+;; template rules used:
+;;  - atomic non-distinct: Integer[0, 300]
+
+;; =================
+;; Functions:
+
+; 
+; PROBLEM B:
+; 
+; The city wants to demolish all buildings classified as "old". 
+; You are hired to design a function called demolish? 
+; that determines whether a building should be torn down or not.
+; 
+
+
+;; BuildingStatus -> Boolean
+;; produce true if age o building is between 101 and 200 years
+(check-expect (demolish? 50) false)
+(check-expect (demolish? 150) true)
+(check-expect (demolish? 250) false)
+
+;(define (demolish? a) false)    ;stub
+
+(define (demolish? a)
+  (cond[(<= 0 a 100) false]
+       [(<= 101 a 200) true]
+       [(<= 201 a 300) false]))
