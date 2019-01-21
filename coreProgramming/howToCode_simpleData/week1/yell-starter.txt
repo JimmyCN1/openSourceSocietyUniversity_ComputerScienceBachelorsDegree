@@ -1,0 +1,28 @@
+
+;; yell-starter.rkt
+
+; 
+; PROBLEM:
+; 
+; DESIGN a function called yell that consumes strings like "hello" 
+; and adds "!" to produce strings like "hello!".
+; 
+; Remember, when we say DESIGN, we mean follow the recipe.
+; 
+; Leave behind commented out versions of the stub and template.
+; 
+
+
+;; String -> String
+;; With given input string, add "!" to the end
+
+(check-expect (exclaim "yes") "yes!")
+(check-expect (exclaim "maybe") "maybe!")
+
+;(define (exclaim str) "")    ; this is the stub
+
+;(define (exclaim str)        ; this is the template
+;  (... str))
+
+(define (exclaim str)
+  (string-append str "!"))
