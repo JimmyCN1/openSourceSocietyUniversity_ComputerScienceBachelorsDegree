@@ -1,0 +1,132 @@
+(require 2htdp/image)
+(require 2htdp/universe)
+
+;; Bubble pop (bubbles of various sizes rise to the top of the screen where they then pop)
+
+;; =================
+;; Constants:
+
+(define WIDTH  600)
+(define HEIGHT 400)
+
+(define SCREEN-TOP 0)
+
+(define BUBBLE-IMAGE .)
+
+(define FLOAT-SPEED 2)
+
+(define BLANK-BACKGROUND (empty-scene WIDTH HEIGHT))
+
+
+;; =================
+;; Data definitions:
+
+(define-struct bubble (x y image-x image-y))
+;; Bubble is (make-bubble Interval[0,      WIDTH]
+;;                        Interval[HEIGHT, SCREEN-TOP]
+;;                        Interval[0,      262]
+;;                        Interval[0,      262])
+;; interp. a rising bubble
+;;           at position: x, y
+;;           of size: image-x, image-y
+
+(define BUBBLE1 (make-bubble 3 10 50 50))    ;example
+
+#;
+(define (fn-for-bubble b)
+  (... (bubble-x b)           ;Interval[0, WIDTH]          
+       (bubble-y b)           ;Interval[HEIGHT, SCREEN-TOP]
+       (bubble-image-x b)     ;Interval[0, 262]
+       (bubble-image-y b)))   ;Interval[0, 262]
+
+;; Template rules used:
+;;    - compound: 4 fields
+
+
+(define-struct size (x y))
+;; Size is (make-bubble Interval[0, 262]
+;;                      Interval[0, 262])
+;; interp. the x and y dimensions of a bubble
+
+(define SIZE1 (make-size 40 40))    ;example
+
+#;
+(define (fn-for-size s)
+  (... (size-x s)
+       (size-y s)))
+
+;; Template rules used:
+;;    - compound: 2 fields
+
+
+
+;; =================
+;; Functions:
+
+;; Bubble -> Bubble
+;; start the world with (make-bubble (/ WIDTH 2) 0 262 262)
+;; 
+(define (main b)
+  (big-bang b                            ; Bubble
+            (on-tick   tock)             ; Bubble -> Bubble
+            (to-draw   render)           ; Bubble -> Image
+            (on-mouse  position)))         ; Bubble Integer Integer MouseEvent -> Bubble
+            ;(on-mouse  hold)             ; Bubble Integer Integer MouseEvent -> Bubble
+            ;(on-mouse  release)))        ; Bubble Integer Integer MouseEvent -> Bubble
+
+;; Bubble -> Bubble
+;; produce the next the next x and y coordinates of the bubble image
+(check-expect (tock (make-bubble 10 15  50 50)) (make-bubble 10 (- 15 FLOAT-SPEED) 50 50))    ;normal float
+(check-expect (tock (make-bubble 10 2   50 50)) (make-bubble 10 2                  50 50))    ;when at the stop of the screen
+
+;(define (tock b) false)    ;stub
+
+(define (tock b)
+  (cond[(> (- (bubble-y b) FLOAT-SPEED) SCREEN-TOP)
+        (make-bubble (bubble-x b)
+                     (- (bubble-y b) FLOAT-SPEED)
+                     (bubble-image-x b)
+                     (bubble-image-y b))]
+       [else
+        (make-bubble (bubble-x b)
+                     (bubble-y b)
+                     (bubble-image-x b)
+                     (bubble-image-y b))]))
+
+; template taken from bubble
+
+
+;; Bubble -> Image
+;; render balloon image at correct position and correct size 
+(check-expect (render (make-bubble 200 300 80 80)) (place-image BUBBLE-IMAGE 200 300 BLANK-BACKGROUND))
+
+;(define (render b) false)    ;stub
+
+(define (render b)
+  (place-image BUBBLE-IMAGE
+               (bubble-x b)          
+               (bubble-y b)
+               BLANK-BACKGROUND))
+
+; template taken from bubble
+
+
+;; Bubble Integer Integer MouseEvent -> Bubble
+;; determine the x coordinate from which the bubble will start floating from 
+(check-expect (position (make-bubble 200 300 40 40) 150 200 "button-down") (make-bubble 150 200 40 40))
+
+;(define (position b x y me) false)    ;stub
+
+(define (position b x y me)
+  (cond [(mouse=? me "button-down")
+         (make-bubble x y (bubble-image-x b) (bubble-image-y b))]
+        [else
+         (make-bubble (bubble-x b) (bubble-y b) (bubble-image-x b) (bubble-image-y b))]))
+
+
+;; Size -> Size
+;; grow the size of a newly placed ball according to how long the mouse key is pressed
+;; !!!
+(define (grow g) false)    ;stub
+
+

@@ -1,0 +1,71 @@
+
+;; student-starter.rkt
+
+;; =================
+;; Data definitions:
+
+; 
+; PROBLEM A:
+; 
+; Design a data definition to help a teacher organize their next field trip. 
+; On the trip, lunch must be provided for all students. For each student, track 
+; their name, their grade (from 1 to 12), and whether or not they have allergies.
+; 
+
+
+(define-struct student (name grade allergies?))
+;; Student is (make-student String Interval Enumeration)
+;; interp. A student:
+;;            - has a name
+;;            - is in grade [1, 12]
+;;            - does or does not have allergies
+
+(define STUDENT1 (make-student "Harry" 3 "allergies"))    ; example
+(define STUDENT2 (make-student "James" 11 "no allergies"))    ; example
+
+#;
+(define (fn-for-student s)
+  (... (student-name s)             ;String
+      (student-grade s)             ;Interval
+      (student-allergies? s)))      ;Enumeration
+
+;; Templates used:
+;;  - compound: 3 cases
+
+;; =================
+;; Functions:
+
+; 
+; PROBLEM B:
+; 
+; To plan for the field trip, if students are in grade 6 or below, the teacher 
+; is responsible for keeping track of their allergies. If a student has allergies, 
+; and is in a qualifying grade, their name should be added to a special list. 
+; Design a function to produce true if a student name should be added to this list.
+; 
+
+
+;; Student -> Boolean
+;; produce true if
+;;  - student is both in grade 6 or below and has allergies
+(check-expect (special? (make-student "Bill" 4 "allergies")) true)
+(check-expect (special? (make-student "Ben" 6 "allergies")) true)
+(check-expect (special? (make-student "Blake" 8 "allergies")) false)
+(check-expect (special? (make-student "Bob" 4 "no allergies")) false)
+(check-expect (special? (make-student "Brody" 6 "no allergies")) false)
+(check-expect (special? (make-student "Blacky" 8 "no allergies")) false)
+
+;(define (special? s) false)    ;stub
+
+(define (special? s)
+  (cond [(and
+          (number? (student-grade s))
+          (<= (student-grade s) 6)
+          (string=? (student-allergies? s) "allergies"))
+          true]
+        [else
+         false]))
+
+;;<Template taken from Student>
+
+
