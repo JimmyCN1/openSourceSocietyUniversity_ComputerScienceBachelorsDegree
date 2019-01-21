@@ -1,0 +1,69 @@
+
+;; boolean-list-starter.rkt
+
+;; =================
+;; Data definitions:
+
+; 
+; PROBLEM A:
+; 
+; Design a data definition to represent a list of booleans. Call it ListOfBoolean. 
+; 
+
+
+;; ListOfBoolean is one of:
+;;  - empty
+;;  - (cons Boolean ListOfBoolean)
+;; interp. a list of booleans
+
+(define LOB-1 empty)
+(define LOB-2 (cons false empty))
+(define LOB-3 (cons true (cons false empty)))
+
+#;
+(define (fn-for-lob lob)
+  (cond [(empty? lob) (...)]                   ;BASE CASE
+        [else (... (first lob)                 ;Boolean
+                   (fn-for-lob (rest lob)))])) ;NATURAL RECURSION
+;;             /
+;;            /
+;;       COMBINATION
+;; Template rules used:
+;;  - one of: 2 cases
+;;  - atomic distinct: empty
+;;  - compound: (cons Boolean ListOfBoolean)
+;;  - self-reference: (rest lob) is ListOfBoolean
+
+;; =================
+;; Functions:
+
+; 
+; PROBLEM B:
+; 
+; Design a function that consumes a list of boolean values and produces true 
+; if every value in the list is true. If the list is empty, your function 
+; should also produce true. Call it all-true?
+; 
+
+
+
+;; ListOfBoolean -> Boolean
+;; produce true if all items in the list are true
+(check-expect (all-true? empty) true)
+(check-expect (all-true? (cons false empty)) false)
+(check-expect (all-true? (cons false (cons true empty))) false)
+(check-expect (all-true? (cons true (cons true empty))) true)
+
+;(define (all-true? lob) false)    ;stub
+
+(define (all-true? lob)
+  (cond [(empty? lob) true]
+        [else
+         (cond [(false? (first lob)) false]
+               [else (all-true? (rest lob))])]))
+
+; template taken from ListOfBoolean
+
+
+
+

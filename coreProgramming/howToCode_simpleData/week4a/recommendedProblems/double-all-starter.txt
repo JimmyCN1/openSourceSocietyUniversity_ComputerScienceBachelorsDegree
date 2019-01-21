@@ -1,0 +1,67 @@
+
+;; double-starter.rkt
+
+;; =================
+;; Data definitions:
+
+; 
+; Remember the data definition for a list of numbers we designed in Lecture 5f:
+; (if this data definition does not look familiar, please review the lecture)
+; 
+
+
+;; ListOfNumber is one of:
+;;  - empty
+;;  - (cons Number ListOfNumber)
+;; interp. a list of numbers
+(define LON1 empty)
+(define LON2 (cons 60 (cons 42 empty)))
+#;
+(define (fn-for-lon lon)
+  (cond [(empty? lon) (...)]
+        [else
+         (... (first lon)
+              (fn-for-lon (rest lon)))]))
+
+;; Template rules used:
+;;  - one of: 2 cases
+;;  - atomic distinct: empty
+;;  - compound: (cons Number ListOfNumber)
+;;  - self-reference: (rest lon) is ListOfNumber
+
+;; =================
+;; Functions:
+
+; 
+; PROBLEM:
+; 
+; Design a function that consumes a list of numbers and doubles every number 
+; in the list. Call it double-all.
+; 
+
+
+
+;; ListOfNumber -> ListOfNumber
+;; doubles each number in a given list of numbers
+(check-expect (double-all empty) empty)
+(check-expect (double-all
+               (cons 15 empty))
+               (cons 30 empty))
+(check-expect (double-all
+               (cons 30 (cons 23 (cons 10 empty))))
+              (cons 60 (cons 46 (cons 20 empty))))
+
+;(define (double-all e) 0)    ;stub
+
+(define (double-all lon)
+  (cond [(empty? lon) empty]
+        [else
+         (cons (* 2 (first lon))
+              (double-all (rest lon)))]))
+
+;<template taken from ListOfNumbers>
+
+
+
+
+
