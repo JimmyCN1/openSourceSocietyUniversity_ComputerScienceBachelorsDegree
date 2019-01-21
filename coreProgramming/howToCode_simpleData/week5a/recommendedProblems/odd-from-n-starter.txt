@@ -1,0 +1,34 @@
+
+;; odd-from-n-starter.rkt
+
+;  PROBLEM:
+;  
+;  Design a function called odd-from-n that consumes a natural number n, and produces a list of all 
+;  the odd numbers from n down to 1. 
+;  
+;  Note that there is a primitive function, odd?, that produces true if a natural number is odd.
+;  
+
+
+
+;; Function Definition:
+
+;; Number -> List
+;; print all odd numbers from n, n-1, ..., 1
+(check-expect (odd-from-n 0) empty)
+(check-expect (odd-from-n 3) (list 3 1))
+(check-expect (odd-from-n 6) (list 5 3 1))
+
+
+;(define (odd-from-n n) empty)    ;stub
+
+(define (odd-from-n n)
+  (cond [(zero? n) empty]
+        [else
+         (cond [(odd? n)
+                (cons n (odd-from-n (- n 1)))]
+               [else (odd-from-n (- n 1))])]))
+
+
+
+

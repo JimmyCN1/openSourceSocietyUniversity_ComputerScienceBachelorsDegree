@@ -1,0 +1,51 @@
+(require 2htdp/image)
+
+;; decreasing-image-starter.rkt
+
+;  PROBLEM:
+;  
+;  Design a function called decreasing-image that consumes a Natural n and produces an image of all the numbers 
+;  from n to 0 side by side. 
+;  
+;  So (decreasing-image 3) should produce .
+
+
+
+;; Data Definition:
+
+;; Natural is one of:
+;;  - (cons Natural empty)
+;;  - (cons Natural ListOfNatural)
+;; interp. a list of naturals
+
+(define N-1 (cons 1 empty))
+(define N-2 (cons 2 N-1))
+(define N-3 (cons 3 N-2))
+
+#;
+(define (fn-for-n n)
+  (cond [(empty? n) (...)]
+        [else (... n 
+                   (fn-for-n n))]))
+
+
+;; Function Definitions:
+
+;; Natural -> Image
+;; given a number, produce a stream of aligned images that contain the count down from the given number to 0
+(check-expect (decreasing-image 0) (text "0"   21 "black"))
+(check-expect (decreasing-image 1) (beside (text "1"  21 "black")
+                                           (text "0"  21 "black")))
+(check-expect (decreasing-image 2) (beside (text "2"  21 "black")
+                                           (text "1"  21 "black")
+                                           (text "0"  21 "black")))
+
+;(define (decreasing-image n) (square 0 "solid" "white"))    ;stub
+
+(define (decreasing-image n)
+  (cond [(zero? n) (text "0" 21 "black")]
+        [else (beside (text (number->string n) 21 "black") 
+                   (decreasing-image (- n 1)))]))
+
+
+
