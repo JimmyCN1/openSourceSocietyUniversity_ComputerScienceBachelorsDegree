@@ -1,0 +1,200 @@
+(require 2htdp/image)
+(require 2htdp/universe)
+
+;; traffic-light-starter.rkt
+
+; 
+; PROBLEM:
+; 
+; Design an animation of a traffic light. 
+; 
+; Your program should show a traffic light that is red, then green, 
+; then yellow, then red etc. For this program, your changing world 
+; state data definition should be an enumeration.
+; 
+; Here is what your program might look like if the initial world 
+; state was the red traffic light:
+; .
+; Next:
+; .
+; Next:
+; .
+; Next is red, and so on.
+; 
+; To make your lights change at a reasonable speed, you can use the 
+; rate option to on-tick. If you say, for example, (on-tick next-color 1) 
+; then big-bang will wait 1 second between calls to next-color.
+; 
+; Remember to follow the HtDW recipe! Be sure to do a proper domain 
+; analysis before starting to work on the code file.
+; 
+; Note: If you want to design a slightly simpler version of the program,
+; you can modify it to display a single circle that changes color, rather
+; than three stacked circles. 
+; 
+
+
+
+;; A simple traffic light schema
+
+;; =================
+;; Constants:
+
+(define WIDTH 600)
+(define HEIGHT 400)
+
+(define CTR-X (/ WIDTH 2))
+(define CTR-Y (/ HEIGHT 2))
+
+(define MTS (empty-scene WIDTH HEIGHT))
+
+(define TRAFWIDTH 150)
+(define TRAFHEIGHT 400)
+
+(define CIRCLERADIUS 40)
+
+
+
+;; =================
+;; Data definitions:
+
+;; Lit is one of:
+;;  - "red"
+;;  - "orange"
+;;  - "green"
+;; interp. the colour of the traffic light
+
+#;
+(define (fn-for-lit li)
+  (cond [Q A]
+        [Q A]
+        [Q A]))
+
+;; Template rules used:
+;;  - One of: 3 cases
+;;  - atomic distinct: "red"
+;;  - atomic distinct: "orange"
+;;  - atomic distinct: "green"
+
+
+
+
+;; =================
+;; Functions:
+
+;; Lit -> Lit
+;; start the main fucntion with "red"
+;; 
+(define (main lit)
+  (big-bang lit                    ; Lit
+            (on-tick   tock 1)     ; Lit -> Lit
+            (to-draw   render)))   ; Lit -> Image
+
+;; Lit -> Lit
+;; produce the next stage/colour of the traffic light 
+(check-expect (tock "red") "green")
+(check-expect (tock "green") "orange")
+(check-expect (tock "orange") "red")
+
+
+;(define (tock li) "")    ;stub
+
+;;<template taken from Lit>
+(define (tock li)
+  (cond [(and (string? li) (string=? li "red")) "green"]
+        [(and (string? li) (string=? li "green")) "orange"]
+        [(and (string? li) (string=? li "orange")) "red"]))
+
+
+;; Lit -> Image
+;; render traffic light stage
+(check-expect (render "red")
+              (place-image
+               (circle CIRCLERADIUS "solid" "red")
+               CTR-X (* AMPLEHEIGHT 1)
+               (place-image
+                (circle CIRCLERADIUS "outline" "orange")
+                CTR-X (* AMPLEHEIGHT 2)
+                (place-image
+                 (circle CIRCLERADIUS "outline" "green")
+                 CTR-X (* AMPLEHEIGHT 3)
+                 (place-image
+                  (rectangle TRAFWIDTH TRAFHEIGHT "solid" "black")
+                  CTR-X CTR-Y
+                  MTS)))))
+(check-expect (render "orange")
+              (place-image
+               (circle CIRCLERADIUS "outline" "red")
+               CTR-X (* AMPLEHEIGHT 1)
+               (place-image
+                (circle CIRCLERADIUS "solid" "orange")
+                CTR-X (* AMPLEHEIGHT 2)
+                (place-image
+                 (circle CIRCLERADIUS "outline" "green")
+                 CTR-X (* AMPLEHEIGHT 3)
+                 (place-image
+                  (rectangle TRAFWIDTH TRAFHEIGHT "solid" "black")
+                  CTR-X CTR-Y
+                  MTS)))))
+(check-expect (render "green")
+              (place-image
+               (circle CIRCLERADIUS "outline" "red")
+               CTR-X (* AMPLEHEIGHT 1)
+               (place-image
+                (circle CIRCLERADIUS "outline" "orange")
+                CTR-X (* AMPLEHEIGHT 2)
+                (place-image
+                 (circle CIRCLERADIUS "solid" "green")
+                 CTR-X (* AMPLEHEIGHT 3)
+                 (place-image
+                  (rectangle TRAFWIDTH TRAFHEIGHT "solid" "black")
+                  CTR-X CTR-Y
+                  MTS)))))
+
+
+;(define (render li) (circle 50 "solid" "blue"))    ;stub
+
+;;<template taken from Lit>
+(define (render li)
+  (cond [(string=? "red" li)
+         (place-image
+          (circle CIRCLERADIUS "solid" "red")
+          CTR-X (* AMPLEHEIGHT 1)
+          (place-image
+           (circle CIRCLERADIUS "outline" "orange")
+           CTR-X (* AMPLEHEIGHT 2)
+           (place-image
+            (circle CIRCLERADIUS "outline" "green")
+            CTR-X (* AMPLEHEIGHT 3)
+            (place-image
+             (rectangle TRAFWIDTH TRAFHEIGHT "solid" "black")
+             CTR-X CTR-Y
+             MTS))))]
+        [(string=? "orange" li)
+         (place-image
+          (circle CIRCLERADIUS "outline" "red")
+          CTR-X (* AMPLEHEIGHT 1)
+          (place-image
+           (circle CIRCLERADIUS "solid" "orange")
+           CTR-X (* AMPLEHEIGHT 2)
+           (place-image
+            (circle CIRCLERADIUS "outline" "green")
+            CTR-X (* AMPLEHEIGHT 3)
+            (place-image
+             (rectangle TRAFWIDTH TRAFHEIGHT "solid" "black")
+             CTR-X CTR-Y
+             MTS))))]
+        [(string=? "green" li)
+         (place-image
+          (circle CIRCLERADIUS "outline" "red")
+          CTR-X (* AMPLEHEIGHT 1)
+          (place-image
+           (circle CIRCLERADIUS "outline" "orange")
+           CTR-X (* AMPLEHEIGHT 2)
+           (place-image
+            (circle CIRCLERADIUS "solid" "green")
+            CTR-X (* AMPLEHEIGHT 3)
+            (place-image
+             (rectangle TRAFWIDTH TRAFHEIGHT "solid" "black")
+             CTR-X CTR-Y
+             MTS))))]))

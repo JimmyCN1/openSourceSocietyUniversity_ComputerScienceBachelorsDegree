@@ -1,0 +1,113 @@
+(require 2htdp/image)
+(require 2htdp/universe)
+
+;; countdown-animation starter.rkt
+
+; 
+; PROBLEM:
+; 
+; Design an animation of a simple countdown. 
+; 
+; Your program should display a simple countdown, that starts at ten, and
+; decreases by one each clock tick until it reaches zero, and stays there.
+; 
+; To make your countdown progress at a reasonable speed, you can use the 
+; rate option to on-tick. If you say, for example, 
+; (on-tick advance-countdown 1) then big-bang will wait 1 second between 
+; calls to advance-countdown.
+; 
+; Remember to follow the HtDW recipe! Be sure to do a proper domain 
+; analysis before starting to work on the code file.
+; 
+; Once you are finished the simple version of the program, you can improve
+; it by reseting the countdown to ten when you press the spacebar.
+; 
+
+
+(require 2htdp/image)
+(require 2htdp/universe)
+
+;; Countdown that counts from ten to zero
+
+;; =================
+;; Constants:
+
+(define WIDTH 600)
+(define HEIGHT 400)
+
+(define CTR-X (/ WIDTH 2))
+(define CTR-Y (/ HEIGHT 2))
+
+(define MTS (empty-scene WIDTH HEIGHT))
+
+(define TEXTSIZE 180)
+(define TEXTCOLOUR "black")
+
+
+;; =================
+;; Data definitions:
+
+;; Counter is Natural
+;; interp. number of seconds left till the Counter reaches zero
+
+(define T1 10)
+(define T2 2)
+#;
+(define (fn-for-Counter c)
+  (... c))
+
+;; Template rules used:
+;;  - atomic non-distinct: Natural
+
+
+;; =================
+;; Functions:
+
+;; Counter -> Counter
+;; start the world Counter at 10 ie. (main 10)
+;; 
+(define (main c)
+  (big-bang c                      ; Counter
+            (on-tick   tock 1)     ; Counter -> Counter
+            (to-draw   render)     ; Counter -> Image
+            (on-key    reset)))    ; Counter KeyEvent -> Counter
+
+
+;; Counter -> Counter
+;; produce the next digit
+(check-expect (tock 9) 8)
+(check-expect (tock 0) 0)
+
+;(define (tock c) 0)    ;stub
+
+;<template taken from Countdown>
+(define (tock c)
+  (cond[(= c 0) c]
+       [else (- c 1)]))
+
+
+;; Counter -> Image
+;; render count onto the MTS 
+(check-expect (render 9)(place-image (text "9" TEXTSIZE TEXTCOLOUR) CTR-X CTR-Y MTS))
+
+;(define (render c) MTS)    ;stub
+
+;<template taken from Countdown>
+(define (render c)
+  (place-image (text (number->string c) TEXTSIZE TEXTCOLOUR) CTR-X CTR-Y MTS))
+
+
+;; Counter KeyEvent -> Counter
+;; reset the countdown to the original starting value set in main
+;; !!!
+(check-expect (reset 10 " ") 10)
+(check-expect (reset 5 " ") 10)
+(check-expect (reset 5 "right") 5)
+(check-expect (reset 0 "right") 0)
+
+;(define (reset c) 0)    ;stub
+
+;<template taken from Counter>
+(define (reset c ke)
+  (cond [(key=? ke " ") 10]
+        [else c]))
