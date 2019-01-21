@@ -1,0 +1,106 @@
+(require 2htdp/image)
+
+;; alternative-tuition-graph-starter.rkt
+
+; 
+; Consider the following alternative type comment for Eva's school tuition 
+; information program. Note that this is just a single type, with no reference, 
+; but it captures all the same information as the two types solution in the 
+; videos.
+; 
+; (define-struct school (name tuition next))
+; ;; School is one of:
+; ;;  - false
+; ;;  - (make-school String Natural School)
+; ;; interp. an arbitrary number of schools, where for each school we have its
+; ;;         name and its tuition in USD
+; 
+; (A) Confirm for yourself that this is a well-formed self-referential data 
+;     definition.
+; 
+; (B) Complete the data definition making sure to define all the same examples as 
+;     for ListOfSchool in the videos.
+; 
+; (C) Design the chart function that consumes School. Save yourself time by 
+;     simply copying the tests over from the original version of chart.
+; 
+; (D) Compare the two versions of chart. Which do you prefer? Why?
+; 
+
+
+;; Constants:
+
+(define FONT-SIZE 24)
+(define FONT-COLOUR "black")
+
+(define Y-SCALE   1/200)
+(define BAR-WIDTH 30)
+(define BAR-COLOUR "lightblue")
+
+
+;; Data definitions:
+
+(define-struct school (name tuition next))
+;; School is one of:
+;;  - false
+;;  - (make-school String Natural School)
+;; interp. an arbitrary number of schools, where for each school we have its
+;;         name and its tuition in USD
+(define S0 false)
+(define S1 (make-school "School1" 27797 S0))
+(define S2 (make-school "School2" 23300 S1))
+(define S3 (make-school "School3" 28500 S2))
+
+#;
+(define (fn-for-school s)
+  (cond [(and (false? s)) (...)]
+        [else (...(school-name s)
+                  (school-tuition s)
+                  (fn-for-school (school-next s)))]))
+
+;; Template rules used:
+;;  - one of: 2 cases
+;;  - atomic distinct: false
+;;  - compound: 3 fields
+;;  - self-reference: (school-next) is School
+
+
+;; Function definitions:
+
+;; School -> Image
+;; produce bar chart showing names and tuitions of consumed schools
+(check-expect (chart false) (square 0 "solid" "white"))
+
+(check-expect (chart (make-school "S1" 8000 false))
+              (beside/align "bottom"
+                            (overlay/align "center" "bottom"
+                                     (rotate 90 (text "S1" FONT-SIZE FONT-COLOUR))
+                                     (rectangle BAR-WIDTH (* 8000 Y-SCALE) "outline" "black")
+                                     (rectangle BAR-WIDTH (* 8000 Y-SCALE) "solid" BAR-COLOUR))
+               (square 0 "solid" "white")))
+
+(check-expect (chart (make-school "S2" 12000 (make-school "S1" 8000 false)))
+              (beside/align "bottom"
+                            (overlay/align "center" "bottom"
+                                     (rotate 90 (text "S2" FONT-SIZE FONT-COLOUR))
+                                     (rectangle BAR-WIDTH (* 12000 Y-SCALE) "outline" "black")
+                                     (rectangle BAR-WIDTH (* 12000 Y-SCALE) "solid" BAR-COLOUR))
+                            (overlay/align "center" "bottom"
+                                     (rotate 90 (text "S1" FONT-SIZE FONT-COLOUR))
+                                     (rectangle BAR-WIDTH (* 8000 Y-SCALE) "outline" "black")
+                                     (rectangle BAR-WIDTH (* 8000 Y-SCALE) "solid" BAR-COLOUR))
+               (square 0 "solid" "white")))
+
+;(define (chart s) (square 0 "solid" "white"))    ;stub
+
+(define (chart s)
+  (cond [(false? s) (square 0 "solid" "white")]
+        [else (beside/align "bottom"
+                            (overlay/align "center" "bottom"
+                                     (rotate 90 (text (school-name s) FONT-SIZE FONT-COLOUR))
+                                     (rectangle BAR-WIDTH (* (school-tuition s) Y-SCALE) "outline" "black")
+                                     (rectangle BAR-WIDTH (* (school-tuition s) Y-SCALE) "solid" BAR-COLOUR))
+              (chart (school-next s)))]))
+
+;template taken from School
+
