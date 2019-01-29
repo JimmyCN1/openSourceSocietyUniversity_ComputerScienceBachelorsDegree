@@ -13,11 +13,12 @@
 (define HEIGHT 500)
 
 (define SURFACE (- HEIGHT 15))
+(define TURRET-HEIGHT (- SURFACE 18))
 
 (define INVADER-X-SPEED 1.5)  ;speeds (not velocities) in pixels per tick
 (define INVADER-Y-SPEED 1.5)
 (define TANK-SPEED 2)
-(define MISSILE-SPEED 0.1)
+(define MISSILE-SPEED 10)
 
 (define HIT-RANGE 10)
 
@@ -137,7 +138,7 @@
         [else (... (first lom)
                    (fn-for-lom (rest lom)))]))
 
-
+ 
 
 (define G0 (make-game empty empty T0))
 (define G1 (make-game empty empty T1))
@@ -154,7 +155,7 @@
 ;; Functions:
 
 ;; Game -> Game
-;; start the world with ...
+;; start the world with (main G1) or (main G4)
 ;; 
 (define (main game)
   (big-bang game                 ; Game
@@ -165,7 +166,7 @@
 
 ;; Game -> Game
 ;; produce the next tank position, invaders position and missile positions
-(check-expect (tick (make-game LOI-3 LOM-3 T1))
+(check-expect (tick G3)
               (make-game (cons (make-invader (+ 150 INVADER-X-SPEED) (+ 100 INVADER-Y-SPEED) 1)
                                (cons true empty))
                          (cons (make-missile 150 (- 300 MISSILE-SPEED))
@@ -252,7 +253,6 @@
               empty)
 (check-expect (move-missile (make-missile 50 -10))             ; missile passes top of the screen
               empty)
-
 
 ;(define (move-missile m) false)    ;stub
 
@@ -406,9 +406,11 @@
 ;(define (render-missile missile img) false)    ;stub
 
 ;template taken from Missile
-(define (render-missile m img)
-  (place-image
-   MISSILE (missile-x m) (missile-y m) img))
+(define (render-missile missile img)
+  (if (<= (missile-y missile) 0)
+      empty
+      (place-image
+       MISSILE (missile-x missile) (missile-y missile) img)))
 
 
 ;; Tank -> Image
@@ -427,8 +429,46 @@
 
 ;; Game KeyEvent -> Game
 ;; shoot a missile
-;; !!!
-(define (shoot g ke) false)    ;stub
+(check-expect (shoot G1 "up")
+              false)
+(check-expect (shoot G1 " ")
+              (make-game
+               empty
+               (cons (make-missile 50 467) empty)
+               (make-tank 50 1)))
+              
+;(define (shoot s ke) false)    ;stub
+
+;template taken from Game
+(define (shoot s ke)
+  (if (key=? ke " ")
+      (make-game (game-invaders s)
+                 (create-missile (game-missiles s) (game-tank s))
+                 (game-tank s))
+      false))
+
+
+;; ListOfMissile -> ListOfMissile
+;; instantiate a bullet when the space key is pressed
+;;   and at the bullet to the list of missile
+(check-expect (create-missile empty T1)
+              (cons (make-missile 50 TURRET-HEIGHT) empty))
+(check-expect (create-missile LOM-2 T1)
+              (cons (make-missile 50 TURRET-HEIGHT)
+                    (cons M1 empty)))
+(check-expect (create-missile LOM-3 T1)
+              (cons (make-missile 50 TURRET-HEIGHT)
+                    (cons M1 (cons M2 empty))))
+
+;(define (create-missile lom tank) false)    ;stub
+
+;template taken from ListOfMissile
+(define (create-missile lom tank)
+  (cond [(empty? lom) (cons (make-missile (tank-x tank) TURRET-HEIGHT) empty)]
+        [else (cons (make-missile (tank-x tank) TURRET-HEIGHT)
+                    (cons (first lom)
+                          (rest lom)))]))
+
 
 
 ;; Invader -> Boolean
