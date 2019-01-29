@@ -3,6 +3,7 @@
 #reader(lib "htdp-beginner-abbr-reader.ss" "lang")((modname space-invaders) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
 (require 2htdp/universe)
 (require 2htdp/image)
+;(require racket/base)
 
 ;; Space Invaders
 
@@ -188,7 +189,7 @@
 (check-expect (move-invaders (cons (make-invader 150 100 1)
                                    (cons (make-invader 150 200 1) empty)))
               (cons (make-invader (+ 150 INVADER-X-SPEED) (+ 100 INVADER-Y-SPEED) 1)
-                               (cons (make-invader (+ 150 INVADER-X-SPEED) (+ 200 INVADER-Y-SPEED) 1) empty)))
+                    (cons (make-invader (+ 150 INVADER-X-SPEED) (+ 200 INVADER-Y-SPEED) 1) empty)))
 
 ;(define (move-invaders loi) empty)    ;stub
 
@@ -235,6 +236,8 @@
                     (cons (make-missile 200 250) empty)))                                                           ;; two fired missiles moving upwards
               (cons (make-missile 150 (- 300 MISSILE-SPEED))
                     (cons (make-missile 200 (- 250 MISSILE-SPEED)) empty)))
+(check-expect (move-missiles (cons (make-missile 150 -10) empty))
+              empty)
 
 ;(define (move-missiles lom) false)    ;stub
 
@@ -407,7 +410,7 @@
 
 ;template taken from Missile
 (define (render-missile missile img)
-  (if (<= (missile-y missile) 0)
+  (if (< (missile-y missile) 0)
       empty
       (place-image
        MISSILE (missile-x missile) (missile-y missile) img)))
