@@ -26,6 +26,7 @@
 (define INVADE-RATE 100)
 
 (define BACKGROUND (empty-scene WIDTH HEIGHT))
+(define BLIP (square 0 "solid" "white"))
 
 (define INVADER
   (overlay/xy (ellipse 10 15 "outline" "blue")              ;cockpit cover
@@ -196,8 +197,11 @@
 ;template taken from ListOfInvader
 (define (move-invaders loi)
   (cond [(empty? loi) empty]
-        [else (cons (move-invader (first loi))
-                    (move-invaders (rest loi)))]))
+        [else
+         (if (>= (invader-y (first loi)) HEIGHT)
+             empty
+             (cons (move-invader (first loi))
+                    (move-invaders (rest loi))))]))
 
 
 ;; Invader -> Invader
@@ -244,27 +248,23 @@
 ;template taken from ListOfMissile
 (define (move-missiles lom)
   (cond [(empty? lom) empty]
-        [else (cons (move-missile (first lom))
-                            (move-missiles (rest lom)))]))
+        [else
+         (if (<= (missile-y (first lom)) 0)
+             empty
+             (cons (move-missile (first lom))
+                   (move-missiles (rest lom))))]))
 
 
 ;; Missile -> Missile
 ;; move a single missile to the correct x y coordinates
 (check-expect (move-missile (make-missile 150 200))            ; normal missile travel
               (make-missile 150 (- 200 MISSILE-SPEED)))
-(check-expect (move-missile (make-missile 50 0))               ; missile reaches top of the screen
-              empty)
-(check-expect (move-missile (make-missile 50 -10))             ; missile passes top of the screen
-              empty)
 
 ;(define (move-missile m) false)    ;stub
 
 ;template taken from Missile
 (define (move-missile m)
-  (cond [(<= (missile-y m) 0)
-         empty]
-        [else
-         (make-missile (missile-x m) (- (missile-y m) MISSILE-SPEED))]))
+  (make-missile (missile-x m) (- (missile-y m) MISSILE-SPEED)))
 
 
 
@@ -405,6 +405,8 @@
 (check-expect (render-missile M1 BACKGROUND)
               (place-image
                MISSILE 150 300 BACKGROUND))
+(check-expect (render-missile (make-missile 150 -10) BACKGROUND)
+              empty)
 
 ;(define (render-missile missile img) false)    ;stub
 
