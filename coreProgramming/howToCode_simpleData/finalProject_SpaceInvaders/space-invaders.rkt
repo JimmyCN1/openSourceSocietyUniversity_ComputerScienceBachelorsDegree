@@ -19,7 +19,7 @@
 (define INVADER-X-SPEED 1.5)  ;speeds (not velocities) in pixels per tick
 (define INVADER-Y-SPEED 1.5)
 (define TANK-SPEED 2)
-(define MISSILE-SPEED 10)
+(define MISSILE-SPEED 5)
 
 (define HIT-RANGE 10)
 
@@ -169,8 +169,7 @@
 ;; Game -> Game
 ;; produce the next tank position, invaders position and missile positions
 (check-expect (tick G3)
-              (make-game (cons (make-invader (+ 150 INVADER-X-SPEED) (+ 100 INVADER-Y-SPEED) 1)
-                               (cons true empty))
+              (make-game (cons (make-invader (+ 150 INVADER-X-SPEED) (+ 100 INVADER-Y-SPEED) 1) empty)
                          (cons (make-missile 150 (- 300 MISSILE-SPEED))
                                (cons (make-missile 150 (- 110 MISSILE-SPEED)) empty))
                          (make-tank (+ 50 TANK-SPEED) 1)))
@@ -199,7 +198,7 @@
   (cond [(empty? loi) empty]
         [else
          (if (>= (invader-y (first loi)) HEIGHT)
-             empty
+             (rest loi)
              (cons (move-invader (first loi))
                     (move-invaders (rest loi))))]))
 
@@ -215,7 +214,7 @@
 (check-expect (move-invader (make-invader WIDTH 100  1))
                             (make-invader (+ WIDTH (* INVADER-X-SPEED -1)) 100 -1))                          ;bump right wall
 (check-expect (move-invader (make-invader 150 HEIGHT 1))
-                            true)                                                                            ;floor reached
+                            (make-invader (+ 150 (* INVADER-X-SPEED 1)) (+ HEIGHT INVADER-Y-SPEED) 1))                                                    ;floor reached
 
 ;(define (move-invader invader) false)    ;stub
 
@@ -225,8 +224,8 @@
          (make-invader (+ (invader-x invader) (* INVADER-X-SPEED 1)) (invader-y invader) (* (invader-dx invader) -1))]
         [(>= (invader-x invader) WIDTH)
          (make-invader (+ (invader-x invader) (* INVADER-X-SPEED -1)) (invader-y invader) (* (invader-dx invader) -1))]
-        [(>= (invader-y invader) HEIGHT)
-         (invaded (make-invader (invader-x invader) (invader-y invader) (invader-dx invader)))]   ;invader reaches the ground
+;        [(>= (invader-y invader) HEIGHT)
+;         (invaded (make-invader (invader-x invader) (invader-y invader) (invader-dx invader)))]   ;invader reaches the ground
         [else
          (make-invader (+ (invader-x invader) (* INVADER-X-SPEED (invader-dx invader)))
                        (+ (invader-y invader) INVADER-Y-SPEED)
@@ -249,8 +248,8 @@
 (define (move-missiles lom)
   (cond [(empty? lom) empty]
         [else
-         (if (<= (missile-y (first lom)) 0)
-             empty
+         (if (< (missile-y (first lom)) 0)
+             (rest lom)
              (cons (move-missile (first lom))
                    (move-missiles (rest lom))))]))
 
@@ -314,7 +313,7 @@
 
 ;(define (render loi lom tank) BACKGROUND)    ;stub
 
-;template taken from game
+;template taken from Game
 (define (render s)
   (place-image
    (render-invaders (game-invaders s) (game-missiles s) (game-tank s))
@@ -405,17 +404,15 @@
 (check-expect (render-missile M1 BACKGROUND)
               (place-image
                MISSILE 150 300 BACKGROUND))
-(check-expect (render-missile (make-missile 150 -10) BACKGROUND)
-              empty)
+;(check-expect (render-missile (make-missile 150 -10) BACKGROUND)
+;              empty)
 
 ;(define (render-missile missile img) false)    ;stub
 
 ;template taken from Missile
 (define (render-missile missile img)
-  (if (< (missile-y missile) 0)
-      empty
-      (place-image
-       MISSILE (missile-x missile) (missile-y missile) img)))
+  (place-image
+   MISSILE (missile-x missile) (missile-y missile) img))
 
 
 ;; Tank -> Image
@@ -455,35 +452,33 @@
 
 ;; ListOfMissile -> ListOfMissile
 ;; instantiate a bullet when the space key is pressed
-;;   and at the bullet to the list of missile
+;;   and add the bullet to the list of missile
 (check-expect (create-missile empty T1)
               (cons (make-missile 50 TURRET-HEIGHT) empty))
 (check-expect (create-missile LOM-2 T1)
-              (cons (make-missile 50 TURRET-HEIGHT)
-                    (cons M1 empty)))
+                    (cons M1 (cons (make-missile 50 TURRET-HEIGHT) empty)))
 (check-expect (create-missile LOM-3 T1)
-              (cons (make-missile 50 TURRET-HEIGHT)
-                    (cons M1 (cons M2 empty))))
+              (cons M1 (cons M2 (cons (make-missile 50 TURRET-HEIGHT) empty))))
 
 ;(define (create-missile lom tank) false)    ;stub
 
 ;template taken from ListOfMissile
 (define (create-missile lom tank)
   (cond [(empty? lom) (cons (make-missile (tank-x tank) TURRET-HEIGHT) empty)]
-        [else (cons (make-missile (tank-x tank) TURRET-HEIGHT)
-                    (cons (first lom)
-                          (rest lom)))]))
-
+        [else
+         (append lom
+                 (cons (make-missile (tank-x tank) TURRET-HEIGHT) empty))]))
 
 
 ;; Invader -> Boolean
 ;; stop the game when the surface has been invaded (when an invader touches the ground)
-(check-expect (invaded (make-invader 150 HEIGHT 1))
-              true)
+;(check-expect (invaded (make-invader 150 HEIGHT 1))
+;              true)
 
 ;(define (invaded invader) false)     ;stub
 
 ;template taken from Invader
+#;
 (define (invaded invader)
   (if (= (invader-y invader) HEIGHT)
       true
