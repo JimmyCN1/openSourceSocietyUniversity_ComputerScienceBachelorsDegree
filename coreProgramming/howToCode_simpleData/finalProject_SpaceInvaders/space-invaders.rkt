@@ -164,7 +164,7 @@
             (on-tick   tick)     ; Game -> Game
             (to-draw   render)   ; Game -> Image
            ; (stop-when invaded)  ; Invader -> Boolean
-            (on-key    shoot)))  ; Game KeyEvent -> Game
+            (on-key    control)))  ; Game KeyEvent -> Game
 
 ;; Game -> Game
 ;; produce the next tank position, invaders position and missile positions
@@ -200,7 +200,7 @@
          (if (>= (invader-y (first loi)) HEIGHT)
              (rest loi)
              (cons (move-invader (first loi))
-                    (move-invaders (rest loi))))]))
+                   (move-invaders (rest loi))))]))
 
 
 ;; Invader -> Invader
@@ -270,12 +270,12 @@
 ;; Tank -> Tank
 ;; produce new tank x-coordinates
 (check-expect (move-tank T1)
-              (make-tank (+ 50 (* TANK-SPEED 1)) 1))   ;moving right
+              (make-tank (+ 50 (* TANK-SPEED 1)) 1))     ;moving right
 (check-expect (move-tank T2)
               (make-tank (+ 50 (* TANK-SPEED -1)) -1))   ;moving left
-(check-expect (move-tank (make-tank WIDTH 1))    ;hit right wall
+(check-expect (move-tank (make-tank WIDTH 1))            ;hit right wall
               (make-tank (+ WIDTH (* TANK-SPEED -1)) -1))
-(check-expect (move-tank (make-tank 0 -1))       ;hit left wall
+(check-expect (move-tank (make-tank 0 -1))               ;hit left wall
               (make-tank (+ 0 (* TANK-SPEED 1)) 1))
               
 
@@ -430,24 +430,54 @@
 
 
 ;; Game KeyEvent -> Game
-;; shoot a missile
-(check-expect (shoot G1 "up")
+;; shoot a missile and control the tank
+(check-expect (control G1 "up")
               false)
-(check-expect (shoot G1 " ")
+(check-expect (control G1 " ")
               (make-game
                empty
                (cons (make-missile 50 467) empty)
                (make-tank 50 1)))
+(check-expect (control (make-game empty empty (make-tank 50  1)) "left")
+              (make-game empty empty (make-tank 50 -1)))
+(check-expect (control (make-game empty empty (make-tank 50 -1)) "right")
+              (make-game empty empty (make-tank 50 1)))
               
-;(define (shoot s ke) false)    ;stub
+;(define (control s ke) false)    ;stub
 
 ;template taken from Game
-(define (shoot s ke)
-  (if (key=? ke " ")
+(define (control s ke)
+  (cond [(key=? ke " ")
+         (make-game (game-invaders s)
+                    (create-missile (game-missiles s) (game-tank s))
+                    (game-tank s))]
+        [(or (key=? ke "left") (key=? ke "right"))
+         (direction-change s ke)]
+        [else
+         false]))
+
+
+;; Game KeyEvent -> Game
+;; change direction of tank
+(check-expect (direction-change G1 "up")
+              G1)
+(check-expect (direction-change (make-game empty empty (make-tank 50  1)) "left")
+              (make-game empty empty (make-tank 50 -1)))
+(check-expect (direction-change (make-game empty empty (make-tank 50 -1)) "right")
+              (make-game empty empty (make-tank 50 1)))
+              
+;(define (direction-change s ke) false)    ;stub
+
+;template taken from Game
+(define (direction-change s ke)
+  (if (or (and (key=? ke "left" ) (= (tank-dir (game-tank s))  1))
+          (and (key=? ke "right") (= (tank-dir (game-tank s)) -1)))
       (make-game (game-invaders s)
-                 (create-missile (game-missiles s) (game-tank s))
-                 (game-tank s))
-      false))
+                 (game-missiles s)
+                 (make-tank (tank-x (game-tank s)) (* (tank-dir (game-tank s)) -1)))
+      (make-game (game-invaders s)
+                 (game-missiles s)
+                 (game-tank s))))
 
 
 ;; ListOfMissile -> ListOfMissile
