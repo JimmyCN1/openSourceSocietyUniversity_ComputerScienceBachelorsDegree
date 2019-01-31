@@ -567,60 +567,114 @@
              (game-tank s)))
 
 
-;; ListOfInvaders ListOfMissiles -> ListOfInvaders
+;; Game -> Game
 ;; remove the particular missile and invader when a collison is detected
-(check-expect (collision empty M2) empty)
-(check-expect (collision (cons (make-invader 150 300 1)                       ;invader hit by missile
+;(check-expect (collision G1) G1)
+(check-expect (collision (make-game (cons (make-invader 150 300 1)                       ;the invader hit by missile
+                                          (cons (make-invader 200 200 1)
+                                                (cons (make-invader 100 100 1) empty)))
+                                    (cons (make-missile 150 150)                          
+                                          (cons (make-missile 150 300) empty))           ;the missile that hit invader
+                                    T1))
+              (make-game (cons (make-invader 200 200 1)
+                               (cons (make-invader 100 100 1) empty))
+                         (cons (make-missile 150 150) empty)
+                         T1))
+(check-expect (collision (make-game (cons (make-invader 150 200 1)                       ;no collisions
+                                          (cons (make-invader 200 200 1)
+                                                (cons (make-invader 100 100 1) empty)))
+                                    (cons (make-missile 150 150)                          
+                                          (cons (make-missile 150 300) empty))           
+                                    T1))
+              (make-game (cons (make-invader 150 200 1)
                                (cons (make-invader 200 200 1)
                                      (cons (make-invader 100 100 1) empty)))
                          (cons (make-missile 150 150)
-                               (cons (make-missile 150 300) empty)))          ;missile that hit invader
-              (cons (make-invader 200 200 1)
-                    (cons (make-invader 100 100 1) empty)))                    
+                               (cons (make-missile 150 300) empty))
+                         T1)) 
 
 ;(define (collision s) false)    ;stub
 
 ;template taken from ListOfInvaders
-(define (collision loi lom)
-  (cond [(empty? loi) empty]
-        [else (cons (collision-detect (first loi) lom)
-                    (collision (rest loi) lom))]))
+(define (collision s)
+  (make-game (collision-invader? (first (game-invaders s)) (game-missiles s))
+             (collision-missile? (game-invaders s) (first (game-missiles s)))
+             (game-tank s)))
 
 
 ;; Invader ListOfMissile -> ListOfMissile
-;; detect collision and remove invader and missile if collision detected
-(check-expect (collision-detect (make-invader 200 200 1) empty) empty)
-(check-expect (collision-detect (make-invader 200 200 1)                          ;no collision detected
-                                (cons (make-missile 150 150)
-                                      (cons (make-missile 150 300) empty)))
+;; detect collision and remove missile if collision detected
+(check-expect (collision-invader? (make-invader 200 200 1)
+                                  (cons (make-missile 150 150)
+                                        (cons (make-missile 150 300) empty)))      ;no hit detected
               (cons (make-missile 150 150)
                     (cons (make-missile 150 300) empty)))
-(check-expect (collision-detect (make-invader 150 300 1)                          ;collision detected
+(check-expect (collision-invader? (make-invader 150 150 1)
                                 (cons (make-missile 150 150)
-                                      (cons (make-missile 150 300) empty)))
-              (cons (make-missile 150 150) empty))
+                                      (cons (make-missile 150 300) empty)))        ;hit detected with first missile
+              (cons (make-missile 150 300) empty))
+(check-expect (collision-invader? (make-invader 150 300 1)
+                                (cons (make-missile 150 150)
+                                      (cons (make-missile 150 300) empty)))        ;hit detected with second missile
+                                (cons (make-missile 150 150) empty))
 
-;(define (collision-detect invader lom) false)    ;stub
+;(define (collision-invader? invader lom) false)    ;stub
 
 ;template taken from ListOfMissile
-(define (collision-detect invader lom)
+(define (collision-invader? invader lom)
   (cond [(empty? lom) empty]
-        [else (if (empty? (hit? invader (first lom)))
-                  (collision-detect invader (rest lom))
+        [else (if (empty? (hit-invader? invader (first lom)))
+                  (collision-invader? invader (rest lom))
                   (cons (first lom)
-                        (collision-detect invader (rest lom))))]))
+                        (collision-missile? invader (rest lom))))]))
+
+
+;; ListOfInvader Missile -> ListOfInvader
+;; detect collision and remove invader if collision detected
+(check-expect (collision-missile? (cons (make-invader 150 300 1)                       ;no hit detected
+                                        (cons (make-invader 200 200 1)
+                                              (cons (make-invader 100 100 1) empty)))
+                                  (make-missile 150 150))
+              (cons (make-invader 150 300 1)
+                    (cons (make-invader 200 200 1)
+                          (cons (make-invader 100 100 1) empty))))
+(check-expect (collision-missile? (cons (make-invader 150 300 1)                       ;hit detected with first invader
+                                        (cons (make-invader 200 200 1)
+                                              (cons (make-invader 100 100 1) empty)))
+                                  (make-missile 150 300))
+              (cons (make-invader 200 200 1)
+                    (cons (make-invader 100 100 1) empty)))
+(check-expect (collision-missile? (cons (make-invader 150 300 1)                       ;hit detected with second invader
+                                        (cons (make-invader 200 200 1)
+                                              (cons (make-invader 100 100 1) empty)))
+                                  (make-missile 200 200))
+              (cons (make-invader 150 300 1)
+                    (cons (make-invader 100 100 1) empty)))
+
+;(define (collision-missile? loi m) false)    ;stub
+
+;template taken from ListOfInvader
+(define (collision-missile? loi m)
+  (cond [(empty? loi) empty]
+        [else (if (empty? (hit-missile? (first loi) m))
+                  (collision-missile? (rest loi) m)
+                  (cons (first loi)
+                        (collision-missile? (rest loi) m)))]))
 
 
 ;; Invader Missile -> Missile
-;; if hit detected, remove missile, else return missile
-(check-expect (hit? (make-invader 200 200 1) (make-missile 150 150))             ;no hit detected
+;; if hit detected, remove invader, else return invader
+(check-expect (hit-invader? (make-invader 150 300 1)                     ;no hit detected
+                            (make-missile 150 150))
               (make-missile 150 150))
-(check-expect (hit? (make-invader 150 300 1) (make-missile 150 300))             ;hit detected
+(check-expect (hit-invader? (make-invader 150 150 1)                     ;hit detected
+                            (make-missile 150 150))
               empty)
 
-;(define (hit? invader m) false)    ;stub
+;(define (hit-invader? invader m) false)    ;stub
 
-(define (hit? invader m)
+;template taken from Invader
+(define (hit-invader? invader m)
   (cond [(and (and (> (missile-x m) (- (invader-x invader) HIT-RANGE))
                    (< (missile-x m) (+ (invader-x invader) HIT-RANGE)))
               (and (> (missile-y m) (- (invader-y invader) HIT-RANGE))
@@ -630,7 +684,25 @@
          m]))
 
 
+;; Invader Missile -> Missile
+;; if hit detected, remove missile, else return missile
+(check-expect (hit-invader? (make-invader 150 300 1)                     ;no hit detected
+                            (make-missile 150 150))
+              (make-missile 150 150))
+(check-expect (hit-invader? (make-invader 150 150 1)                     ;hit detected
+                            (make-missile 150 150))
+              empty)
+;(define (hit-missile? missile m) false)    ;stub
 
+;template taken from Invader
+(define (hit-missile? invader m)
+  (cond [(and (and (> (missile-x m) (- (invader-x invader) HIT-RANGE))
+                   (< (missile-x m) (+ (invader-x invader) HIT-RANGE)))
+              (and (> (missile-y m) (- (invader-y invader) HIT-RANGE))
+                   (< (missile-y m) (+ (invader-y invader) HIT-RANGE))))
+         empty]
+        [else
+         invader]))
 
 
 
