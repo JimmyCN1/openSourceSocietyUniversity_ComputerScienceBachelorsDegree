@@ -4,6 +4,8 @@
 (require 2htdp/universe)
 (require 2htdp/image)
 ;(require racket/base)
+;(require racket/contract/base)
+(require web-server/private/timer)
 
 ;; Space Invaders
 
@@ -18,12 +20,15 @@
 
 (define INVADER-X-SPEED 1.5)  ;speeds (not velocities) in pixels per tick
 (define INVADER-Y-SPEED 1.5)
+(define INVADER-SPAWN-HEIGHT -10)
+(define MAX-INVADER 10)
+
 (define TANK-SPEED 2)
-(define MISSILE-SPEED 5)
+(define MISSILE-SPEED 10)
 
 (define HIT-RANGE 10)
 
-(define INVADE-RATE 100)
+(define INVADE-RATE 150)
 
 (define BACKGROUND (empty-scene WIDTH HEIGHT))
 (define BLIP (square 0 "solid" "white"))
@@ -102,7 +107,7 @@
 
 (define LOI-1 empty)
 (define LOI-2 (cons I1 empty))              ;one invader
-(define LOI-3 (cons I1 (cons I2 empty)))   ;two indaders
+(define LOI-3 (cons I1 (cons I2 empty)))    ;two indaders
 
 #;
 (define (fn-for-loi loi)
@@ -157,7 +162,7 @@
 ;; Functions:
 
 ;; Game -> Game
-;; start the world with (main G1) or (main G4)
+;; start the world with (main G1)
 ;; 
 (define (main game)
   (big-bang game                 ; Game
@@ -178,7 +183,7 @@
 
 ;template taken from game
 (define (tick s)
-  (make-game (move-invaders (game-invaders s))
+  (make-game (move-invaders (game-invaders (invader-countdown s)))
              (move-missiles (game-missiles s))
              (move-tank (game-tank s))))
 
@@ -432,7 +437,7 @@
 ;; Game KeyEvent -> Game
 ;; shoot a missile and control the tank
 (check-expect (control G1 "up")
-              false)
+              G1)
 (check-expect (control G1 " ")
               (make-game
                empty
@@ -454,7 +459,7 @@
         [(or (key=? ke "left") (key=? ke "right"))
          (direction-change s ke)]
         [else
-         false]))
+         s]))
 
 
 ;; Game KeyEvent -> Game
@@ -513,6 +518,57 @@
   (if (= (invader-y invader) HEIGHT)
       true
       false))
+
+
+;; Game -> Game
+;; random generation of INVADER
+(check-expect (invader-countdown G3)                                                      ;when random != INVADE-RATE
+              G3)
+(check-expect (invader-countdown G3)
+              (make-game (cons (make-invader (random WIDTH) INVADER-SPAWN-HEIGHT 1)       ;when random = INVADE-RATE
+                               (cons I1
+                                     (cons I2 empty)))
+                         (cons M1 (cons M2 empty))
+                         T1))
+
+;(define (invader-countdown s) false)    ;stub
+
+;template taken from ListOfInvader
+(define (invader-countdown s)
+  (cond [(and (= (random (+ INVADE-RATE 1)) INVADE-RATE)
+              (< (length (game-invaders s)) MAX-INVADER))
+         (make-game (game-invaders (invader-countdown (spawn-invaders s)))
+                    (game-missiles s)
+                    (game-tank s))]
+        [else
+         s]))
+
+
+;; Game -> Game
+;; generate new invaders at x width above the screen
+(check-expect (spawn-invaders G1)
+              (make-game (cons (make-invader (random WIDTH) INVADER-SPAWN-HEIGHT 1) empty)
+                         empty
+                         T1))
+(check-expect (spawn-invaders G3)
+              (make-game (cons (make-invader (random WIDTH) INVADER-SPAWN-HEIGHT 1)
+                               (cons I1 (cons I2 empty)))
+                         (cons M1 (cons M2 empty))
+                         T1))
+             
+;(define (spawn-invaders s) empty)    ;stub
+
+;template take from ListOfInvader
+(define (spawn-invaders s)
+  (make-game (cons (make-invader
+                    (random WIDTH)
+                    INVADER-SPAWN-HEIGHT
+                    1)
+                   (game-invaders s))
+             (game-missiles s)
+             (game-tank s)))
+
+
 
 
 
