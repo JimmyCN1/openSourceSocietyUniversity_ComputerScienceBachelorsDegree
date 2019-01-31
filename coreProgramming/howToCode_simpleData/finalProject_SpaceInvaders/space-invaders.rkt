@@ -168,7 +168,7 @@
   (big-bang game                 ; Game
             (on-tick   tick)     ; Game -> Game
             (to-draw   render)   ; Game -> Image
-           ; (stop-when invaded)  ; Invader -> Boolean
+            (stop-when invaded)  ; Invader -> Boolean
             (on-key    control)))  ; Game KeyEvent -> Game
 
 ;; Game -> Game
@@ -503,19 +503,34 @@
                  (cons (make-missile (tank-x tank) TURRET-HEIGHT) empty))]))
 
 
-;; Invader -> Boolean
+;; Game -> Boolean
 ;; stop the game when the surface has been invaded (when an invader touches the ground)
-;(check-expect (invaded (make-invader 150 HEIGHT 1))
-;              true)
+(check-expect (invaded G3)                ;an invader has reached the surface
+              true)
+(check-expect (invaded G4)                ;no invaders have reached the surface
+              false)
 
-;(define (invaded invader) false)     ;stub
+;(define (invaded s) false)     ;stub
 
-;template taken from Invader
-#;
-(define (invaded invader)
-  (if (= (invader-y invader) HEIGHT)
-      true
-      false))
+;template taken from Game
+(define (invaded s)
+  (check-height (game-invaders s)))
+
+
+;; ListOfInvaders -> Boolean
+;; produce true if invader in list has reached the bottom
+(check-expect (check-height LOI-1) false)
+(check-expect (check-height LOI-2) false)          ;no invaders at surface
+(check-expect (check-height LOI-3) true)           ;contains invader at surface
+
+;(define (check-height loi) false)    ;stub
+
+;template taken from ListOfInvaders
+(define (check-height loi)
+  (cond [(empty? loi) false]
+        [else (if (>= (invader-y (first loi)) HEIGHT)
+                  true
+                  (check-height (rest loi)))]))
 
 
 ;; Game -> Game
@@ -686,12 +701,13 @@
 
 ;; Invader Missile -> Missile
 ;; if hit detected, remove missile, else return missile
-(check-expect (hit-invader? (make-invader 150 300 1)                     ;no hit detected
+(check-expect (hit-missile? (make-invader 150 300 1)                     ;no hit detected
                             (make-missile 150 150))
-              (make-missile 150 150))
-(check-expect (hit-invader? (make-invader 150 150 1)                     ;hit detected
+              (make-invader 150 300 1))
+(check-expect (hit-missile? (make-invader 150 150 1)                     ;hit detected
                             (make-missile 150 150))
               empty)
+
 ;(define (hit-missile? missile m) false)    ;stub
 
 ;template taken from Invader
