@@ -1,0 +1,80 @@
+
+;; merge-starter.rkt
+
+; Problem:
+; 
+; Design the function merge. It consumes two lists of numbers, which it assumes are 
+; each sorted in ascending order. It produces a single list of all the numbers, 
+; also sorted in ascending order. 
+; 
+; Your solution should explicitly show the cross product of type comments table, 
+; filled in with the values in each case. Your final function should have a cond 
+; with 3 cases. You can do this simplification using the cross product table by 
+; recognizing that there are subtly equal answers. 
+; 
+; Hint: Think carefully about the values of both lists. You might see a way to 
+; change a cell content so that 2 cells have the same value.
+; 
+
+
+
+;; Data Definitions:
+
+;; ListOfNumber is one of:
+;;  - empty
+;;  - (cons Number ListOfNumber)
+;; interp. list of numbers sorted in ascending order
+
+(define LON1 empty)
+(define LON2 (list 1))
+(define LON3 (list 1 2 3))
+(define LON4 (list 1 2 3 5 7))
+(define LON5 (list 1 3 5 6 7 8))
+
+#;
+(define (fn-for-lon lon)
+  (cond [(empty? lon) (...)]
+        [else (... (first lon)
+                   (fn-for-lon (rest lon)))]))
+;                     lonb                empty           (cons Number ListOfNumber) 
+;           lona
+; 
+;           empty                         lonb                      lonb
+; 
+; (cons Number ListOfNumber)              lona          (if (<= (first lona) (first lonb))
+;                                                           (cons (first lona)
+;                                                                 (merge-ascending (rest lona) lonb))
+;                                                           (cons (first lonb)
+;                                                                 (merge-ascending lona (rest lonb))))
+
+
+
+
+;; Function Definitions:
+
+
+;; ListOfNumber ListOfNumber -> ListOfNumber
+;; consume two lists of numbers already sorted in ascending order and
+;;      merge them into one list still into ascending order
+(check-expect (merge-ascending LON1 LON1) LON1)
+(check-expect (merge-ascending LON1 LON2) (list 1))
+(check-expect (merge-ascending LON2 LON1) (list 1))
+(check-expect (merge-ascending LON2 LON2) (list 1))
+(check-expect (merge-ascending LON2 LON3) (list 1 2 3 5 7))
+(check-expect (merge-ascending LON3 LON5) (list 1 2 3 5 6 7 8))
+(check-expect (merge-ascending LON5 LON3) (list 1 2 3 5 6 7 8))
+
+;(define (merge-ascending lona lonb) false)    ;stub
+
+(define (merge-ascending lona lonb)
+  (cond [(empty? lona) lonb]
+        [(empty? lonb) lona]
+        [else (if (< (first lona) (first lonb))
+                  (cons (first lona)
+                        (merge-ascending (rest lona) lonb))
+                  (cons (first lonb)
+                        (merge-ascending lona (rest lonb))))]))
+
+
+
+
