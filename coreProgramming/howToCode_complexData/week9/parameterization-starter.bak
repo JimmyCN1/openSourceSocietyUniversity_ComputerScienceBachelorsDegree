@@ -1,17 +1,10 @@
 ;; The first three lines of this file were inserted by DrRacket. They record metadata
 ;; about the language level of this file in a form that our tools can easily process.
-#reader(lib "htdp-intermediate-reader.ss" "lang")((modname parameterization-starter) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
+#reader(lib "htdp-intermediate-reader.ss" "lang")((modname parameterization-starter) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f ())))
 ;; parameterization-starter.rkt
 
-(define (area r)
-  (* pi (sqr r)))
-
-(area 4) ;(* pi (sqr 4)) ;area of circle radius 4
-(area 6) ;(* pi (sqr 6)) ;area of circle radius 6
-
-
-
-
+(* pi (sqr 4)) ;area of circle radius 4
+(* pi (sqr 6)) ;area of circle radius 6
 
 
 ;; ====================
@@ -27,7 +20,12 @@
 
 ;<template from ListOfString>
 
-(define (contains-ubc? los) (contains? "UBC" los))
+(define (contains-ubc? los)
+  (cond [(empty? los) false]
+        [else
+         (if (string=? (first los) "UBC")
+             true
+             (contains-ubc? (rest los)))]))
 
 ;; ListOfString -> Boolean
 ;; produce true if los includes "McGill"
@@ -40,14 +38,12 @@
 
 ;<template from ListOfString>
 
-(define (contains-mcgill? los) (contains? "McGill" los))
-
-(define (contains? s los)
+(define (contains-mcgill? los)
   (cond [(empty? los) false]
         [else
-         (if (string=? (first los) s)
+         (if (string=? (first los) "McGill")
              true
-             (contains? s (rest los)))]))
+             (contains-mcgill? (rest los)))]))
 
 
 ;; ====================
@@ -61,7 +57,11 @@
 
 ;<template from ListOfNumber>
 
-(define (squares lon) (map2 sqr lon))
+(define (squares lon)
+  (cond [(empty? lon) empty]
+        [else
+         (cons (sqr (first lon))
+               (squares (rest lon)))]))
 
 ;; ListOfNumber -> ListOfNumber
 ;; produce list of sqrt of every number in lon
@@ -72,13 +72,11 @@
 
 ;<template from ListOfNumber>
 
-(define (square-roots lon) (map2 sqrt lon))
-
-(define (map2 fn lon)
+(define (square-roots lon)
   (cond [(empty? lon) empty]
         [else
-         (cons (fn (first lon))
-               (map2 fn (rest lon)))]))
+         (cons (sqrt (first lon))
+               (square-roots (rest lon)))]))
 
 
 ;; ====================
@@ -92,7 +90,13 @@
 
 ;<template from ListOfNumber>
 
-(define (positive-only lon) (filter-to positive? lon))
+(define (positive-only lon)
+  (cond [(empty? lon) empty]
+        [else
+         (if (positive? (first lon))
+             (cons (first lon)
+                   (positive-only (rest lon)))
+             (positive-only (rest lon)))]))
 
 
 ;; ListOfNumber -> ListOfNumber
@@ -104,15 +108,10 @@
 
 ;<template from ListOfNumber>
 
-(define (negative-only lon) (filter-to negative? lon))
-
-
-(define (filter-to sign lon)
+(define (negative-only lon)
   (cond [(empty? lon) empty]
         [else
-         (if (sign (first lon))
+         (if (negative? (first lon))
              (cons (first lon)
-                   (filter-to sign (rest lon)))
-             (filter-to sign (rest lon)))]))
-
-
+                   (negative-only (rest lon)))
+             (negative-only (rest lon)))]))
