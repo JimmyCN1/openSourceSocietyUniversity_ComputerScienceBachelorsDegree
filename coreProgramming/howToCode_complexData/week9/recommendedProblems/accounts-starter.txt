@@ -1,0 +1,244 @@
+
+;; accounts-starter.rkt
+
+(define-struct node (id name bal l r))
+;; Accounts is one of:
+;;  - false
+;;  - (make-node Natural String Integer Accounts Accounts)
+;; interp. a collection of bank accounts
+;;   false represents an empty collection of accounts.
+;;   (make-node id name bal l r) is a non-empty collection of accounts such that:
+;;    - id is an account identification number (and BST key)
+;;    - name is the account holder's name
+;;    - bal is the account balance in dollars CAD 
+;;    - l and r are further collections of accounts
+;; INVARIANT: for a given node:
+;;     id is > all ids in its l(eft)  child
+;;     id is < all ids in its r(ight) child
+;;     the same id never appears twice in the collection
+
+(define ACT0 false)
+(define ACT1 (make-node 1 "Mr. Rogers"  22 false false))
+(define ACT4 (make-node 4 "Mrs. Doubtfire"  -3
+                        false
+                        (make-node 7 "Mr. Natural" 13 false false)))
+(define ACT3 (make-node 3 "Miss Marple"  600 ACT1 ACT4))
+(define ACT42 
+  (make-node 42 "Mr. Mom" -79
+             (make-node 27 "Mr. Selatcia" 40 
+                        (make-node 14 "Mr. Impossible" -9 false false)
+                        false)
+             (make-node 50 "Miss 604"  16 false false)))
+(define ACT10 (make-node 10 "Dr. No" 84 ACT3 ACT42))
+
+#;
+(define (fn-for-act act)
+  (cond [(false? act) (...)]
+        [else
+         (... (node-id act)
+              (node-name act)
+              (node-bal act)
+              (fn-for-act (node-l act))
+              (fn-for-act (node-r act)))]))
+
+
+; PROBLEM 1:
+; 
+; Design an abstract function (including signature, purpose, and tests) 
+; to simplify the remove-debtors and remove-profs functions defined below.
+; 
+; Now re-define the original remove-debtors and remove-profs functions 
+; to use your abstract function. Remember, the signature and tests should 
+; not change from the original functions.
+
+
+;; Accounts -> Accounts
+;; remove all accounts with a negative balance
+(check-expect (remove-debtors (make-node 1 "Mr. Rogers" 22 false false)) 
+              (make-node 1 "Mr. Rogers" 22 false false))
+
+(check-expect (remove-debtors (make-node 14 "Mr. Impossible" -9 false false))
+              false)
+
+(check-expect (remove-debtors
+               (make-node 27 "Mr. Selatcia" 40
+                          (make-node 14 "Mr. Impossible" -9 false false)
+                          false))
+              (make-node 27 "Mr. Selatcia" 40 false false))
+
+(check-expect (remove-debtors 
+               (make-node 4 "Mrs. Doubtfire" -3
+                          false 
+                          (make-node 7 "Mr. Natural" 13 false false)))
+              (make-node 7 "Mr. Natural" 13 false false))
+
+(define (remove-debtors act)
+  (local [(define (debt? account) (negative? (node-bal account)))]
+    (remove-acc debt? act)))
+
+
+;; Accounts -> Accounts
+;; Remove all professors' accounts.  
+(check-expect (remove-profs (make-node 27 "Mr. Smith" 100000 false false)) 
+              (make-node 27 "Mr. Smith" 100000 false false))
+(check-expect (remove-profs (make-node 44 "Prof. Longhair" 2 false false)) false)
+(check-expect (remove-profs (make-node 67 "Mrs. Dash" 3000
+                                       (make-node 9 "Prof. Booty" -60 false false)
+                                       false))
+              (make-node 67 "Mrs. Dash" 3000 false false))
+(check-expect (remove-profs 
+               (make-node 97 "Prof. X" 7
+                          false 
+                          (make-node 112 "Ms. Magazine" 467 false false)))
+              (make-node 112 "Ms. Magazine" 467 false false))
+
+(define (remove-profs act)
+  (local [(define (prof? act) (has-prefix? "Prof." (node-name act)))]
+    (remove-acc prof? act)))
+
+;; String String -> Boolean
+;; Determine whether pre is a prefix of str.
+(check-expect (has-prefix? "" "rock") true)
+(check-expect (has-prefix? "rock" "rockabilly") true)
+(check-expect (has-prefix? "blues" "rhythm and blues") false)
+
+(define (has-prefix? pre str)
+  (string=? pre (substring str 0 (string-length pre))))
+  
+
+;; (Accounts -> Boolean) Accounts -> Accounts
+;; remove accounts that meet the pred requirements
+(check-expect (local [(define (yes? act) true)]
+                (remove-acc yes? false))
+              false)
+(check-expect (local [(define (yes? act) true)]
+                (remove-acc yes? ACT1))
+              false)
+(check-expect (local [(define (no? act) false)]
+                (remove-acc no? ACT1))
+              ACT1)
+(check-expect (local [(define (debtor? act) (negative? (node-bal act)))]
+                (remove-acc debtor? ACT1))
+              ACT1)
+
+(define (remove-acc pred act)
+  (cond [(false? act) false]
+        [else
+         (if (pred act)
+             (join (remove-acc pred (node-l act))
+                   (remove-acc pred (node-r act)))
+             (make-node (node-id act)
+                        (node-name act)
+                        (node-bal act)
+                        (remove-acc pred (node-l act))
+                        (remove-acc pred (node-r act))))]))
+
+;; Accounts -> Accounts
+;; remove accounts where the character has an odd length name
+(check-expect (remove-odd-name false)
+              false)
+(check-expect (remove-odd-name ACT1)
+              ACT1)
+(check-expect (remove-odd-name ACT4)
+              (make-node 4 "Mrs. Doubtfire"  -3 false false))
+(check-expect (remove-odd-name ACT42)
+              (make-node 50 "Miss 604"  16
+                         (make-node 27 "Mr. Selatcia" 40
+                                    (make-node 14 "Mr. Impossible" -9 false false)
+                                    false)
+                         false))
+
+(define (remove-odd-name act)
+  (local [(define (odd? act) (= (modulo (string-length (node-name act)) 2) 1))]
+    (remove-acc odd? act)))
+
+
+
+;; Accounts Accounts -> Accounts
+;; Combine two Accounts's into one
+;; ASSUMPTION: all ids in act1 are less than the ids in act2
+(check-expect (join ACT42 false) ACT42)
+(check-expect (join false ACT42) ACT42)
+(check-expect (join ACT1 ACT4) 
+              (make-node 4 "Mrs. Doubtfire" -3
+                         ACT1
+                         (make-node 7 "Mr. Natural" 13 false false)))
+(check-expect (join ACT3 ACT42) 
+              (make-node 42 "Mr. Mom" -79
+                         (make-node 27 "Mr. Selatcia" 40
+                                    (make-node 14 "Mr. Impossible" -9
+                                               ACT3
+                                               false)
+                                    false)
+                         (make-node 50 "Miss 604" 16 false false)))
+
+(define (join act1 act2)
+  (cond [(false? act2) act1]
+        [else
+         (make-node (node-id act2) 
+                    (node-name act2)
+                    (node-bal act2)
+                    (join act1 (node-l act2))
+                    (node-r act2))]))
+
+
+; PROBLEM 2:
+; 
+; Using your new abstract function, design a function that removes from a given
+; BST any account where the name of the account holder has an odd number of
+; characters.  Call it remove-odd-characters.
+
+
+; Problem 3:
+; 
+; Design an abstract fold function for Accounts called fold-act. 
+; 
+; Use fold-act to design a function called charge-fee that decrements
+; the balance of every account in a given collection by the monthly fee of 3 CAD.
+
+
+;; (X Accounts -> Y) Y Accounts -> Y
+;; the abstract function for Accounts
+(check-expect (local ([define (count-accounts id name bal l r) (+ 1 l r)])
+                (fold-act count-accounts 0 ACT42))
+              4)
+(check-expect (local ([define (bank-holdings id name bal l r) (+ bal l r)])
+                (fold-act bank-holdings 0 ACT42))
+              -32)
+
+(define (fold-act combine base act)
+  (cond [(false? act) base]
+        [else
+         (combine (node-id act)
+                  (node-name act)
+                  (node-bal act)
+                  (fold-act combine base (node-l act))
+                  (fold-act combine base (node-r act)))]))
+
+
+;; Accounts -> Accounts
+;; reduce the balance of every account in tree by 3 CAD
+(check-expect (apply-charge ACT0) false)
+(check-expect (apply-charge ACT1) (make-node 1 "Mr. Rogers"  19 false false))
+(check-expect (apply-charge ACT42)
+              (make-node 42 "Mr. Mom" -82
+                         (make-node 27 "Mr. Selatcia" 37 
+                                    (make-node 14 "Mr. Impossible" -12 false false)
+                                    false)
+                         (make-node 50 "Miss 604"  13 false false)))
+
+;(define (apply-charge act) false)    ;stub
+
+(define (apply-charge act)
+  (local [(define (reduce id name bal l r) (make-node id name (- bal 3) l r))]
+    (fold-act reduce false act)))
+
+; PROBLEM 4:
+; 
+; Suppose you needed to design a function to look up an account based on its ID.
+; Would it be better to design the function using fold-act, or to design the
+; function using the fn-for-acts template?  Briefly justify your answer.
+
+
+; It would be better to look up the tree using fn-for-act as fold-act would
+; continue to search the rest of the tree even after the id is located.

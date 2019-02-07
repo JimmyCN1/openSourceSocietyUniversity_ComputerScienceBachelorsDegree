@@ -1,0 +1,31 @@
+(require 2htdp/image)
+
+;; wide-only-starter.rkt
+
+; 
+; PROBLEM:
+; 
+; Use the built in version of filter to design a function called wide-only 
+; that consumes a list of images and produces a list containing only those 
+; images that are wider than they are tall.
+; 
+
+
+;; ListOfImage -> ListOfImage
+;; produce a list of images that are wider than they are tall given a list of images
+(check-expect (wide-only (list
+                          (rectangle 10 10 "solid" "red")
+                          (rectangle 20 10 "solid" "red")
+                          (rectangle 10 20 "solid" "red")
+                          (rectangle 5 10 "solid" "red")
+                          (rectangle 30 10 "solid" "red")))
+              (list
+               (rectangle 20 10 "solid" "red")
+               (rectangle 30 10 "solid" "red")))
+
+;(define (wide-only loi) empty)    ;stub
+
+(define (wide-only loi)
+  (local [(define (wider? i)
+          (> (image-width i) (image-height i)))]  
+    (filter wider? loi)))

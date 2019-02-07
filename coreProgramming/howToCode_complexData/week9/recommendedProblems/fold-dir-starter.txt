@@ -1,0 +1,159 @@
+(require 2htdp/image)
+
+;; fold-dir-starter.rkt
+
+; 
+; In this exercise you will be need to remember the following DDs 
+; for an image organizer.
+; 
+
+
+;; =================
+;; Data definitions:
+
+(define-struct dir (name sub-dirs images))
+;; Dir is (make-dir String ListOfDir ListOfImage)
+;; interp. An directory in the organizer, with a name, a list
+;;         of sub-dirs and a list of images.
+
+;; ListOfDir is one of:
+;;  - empty
+;;  - (cons Dir ListOfDir)
+;; interp. A list of directories, this represents the sub-directories of
+;;         a directory.
+
+;; ListOfImage is one of:
+;;  - empty
+;;  - (cons Image ListOfImage)
+;; interp. a list of images, this represents the sub-images of a directory.
+;; NOTE: Image is a primitive type, but ListOfImage is not.
+
+(define I1 (square 10 "solid" "red"))
+(define I2 (square 12 "solid" "green"))
+(define I3 (rectangle 13 14 "solid" "blue"))
+(define D4 (make-dir "D4" empty (list I1 I2)))
+(define D5 (make-dir "D5" empty (list I3)))
+(define D6 (make-dir "D6" (list D4 D5) empty))
+
+#;#;#;
+(define (fn-for-dir dir)
+  (... (dir-name dir)
+       (fn-for-lod (dir-sub-dirs dir))
+       (fn-for-loi (dir-images dir))))
+
+(define (fn-for-lod lod)
+  (cond [(empty? lod) (...)]
+        [else
+         (... (first lod)
+              (fn-for-lod (rest lod)))]))
+
+(define (fn-for-loi loi)
+  (cond [(empty? loi) (...)]
+        [else
+         (... (first loi)
+              (fn-for-lod (rest loi)))]))
+
+;; =================
+;; Functions:
+
+; 
+; PROBLEM A:
+; 
+; Design an abstract fold function for Dir called fold-dir. 
+; 
+
+
+;; (String Y Z -> X) (X Y -> Y) (Image Z -> Z) Y Z Dir -> X 
+;; the abstract fold function for Dir
+(check-expect (fold-dir make-dir cons cons empty empty D6) D6)
+(check-expect (local [(define (c1 name lod loi) loi)
+                      (define (c2 dir lod) lod)
+                      (define (c3 img loi) (beside img loi))]
+                (fold-dir c1 c2 c3 empty (square 0 "solid" "white") D4))
+              (beside (square 10 "solid" "red")
+                      (square 12 "solid" "green")))
+
+(define (fold-dir c1 c2 c3 b1 b2 dir)
+  (local [(define (fn-for-dir dir)     ;->X
+            (c1 (dir-name dir)
+                (fn-for-lod (dir-sub-dirs dir))
+                (fn-for-loi (dir-images dir))))
+
+          (define (fn-for-lod lod)     ;->Y
+            (cond [(empty? lod) b1]
+                  [else
+                   (c2 (fn-for-dir (first lod))
+                       (fn-for-lod (rest lod)))]))
+
+          (define (fn-for-loi loi)     ;->Z
+            (cond [(empty? loi) b2]
+                  [else
+                   (c3 (first loi)
+                       (fn-for-loi (rest loi)))]))]
+
+    (fn-for-dir dir)))
+
+
+; 
+; PROBLEM B:
+; 
+; Design a function that consumes a Dir and produces the number of 
+; images in the directory and its sub-directories. 
+; Use the fold-dir abstract function.
+; 
+
+
+;; Dir -> Natural
+;; produce the total number of images in the directory
+(check-expect (count-imgs D5) 1)
+(check-expect (count-imgs D4) 2)
+(check-expect (count-imgs D6) 3)
+
+;(define (count-imgs img) 0)    ;stub
+
+(define (count-imgs dir)
+  (local [(define (c1 name lod loi) (+ lod loi))
+          (define (c2 dir lod) (+ dir lod))
+          (define (c3 img loi) (+ 1 loi))] 
+    (fold-dir c1 c2 c3 0 0 dir)))
+
+
+
+; 
+; PROBLEM C:
+; 
+; Design a function that consumes a Dir and a String. The function looks in
+; dir and all its sub-directories for a directory with the given name. If it
+; finds such a directory it should produce true, if not it should produce false. 
+; Use the fold-dir abstract function.
+; 
+
+
+;; Dir String -> Boolean
+;; produce true if given directory name is found in Dir
+(check-expect (fold-search D4 "D3") false)
+(check-expect (fold-search D4 "D4") true)
+(check-expect (fold-search D6 "D2") false)
+(check-expect (fold-search D6 "D4") true)
+(check-expect (fold-search D6 "D6") true)
+
+;(define (fold-search dir s) false)    ;stub
+
+(define (fold-search dir s)
+  (local [(define (c1 name lod loi) (if (string=? name s)
+                                        true
+                                        lod))
+          (define (c2 dir lod) dir)
+          (define (c3 img loi) loi)]
+  (fold-dir c1 c2 c3 false false D6)))
+
+
+; 
+; PROBLEM D:
+; 
+; Is fold-dir really the best way to code the function from part C? Why or 
+; why not?
+; 
+
+
+;No because the funs through and returns the c3 for each dir even though it is not required in the function..
