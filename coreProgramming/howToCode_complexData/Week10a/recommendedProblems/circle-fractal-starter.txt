@@ -1,0 +1,86 @@
+(require 2htdp/image)
+
+;; circle-fractal-starter.rkt
+
+; 
+; PROBLEM :
+; 
+; Design a function that will create the following fractal:
+; 
+;             .
+; 
+;             
+; 
+; Each circle is surrounded by circles that are two-fifths smaller. 
+; 
+; You can build these images using the convenient beside and above functions
+; if you make your actual recursive function be one that just produces the
+; top leaf shape. You can then rotate that to produce the other three shapes.
+; 
+; You don't have to use this structure if you are prepared to use more
+; complex place-image functions and do some arithmetic. But the approach
+; where you use the helper is simpler.
+; 
+; Include a termination argument for your design.
+
+
+;; =================
+;; Constants:
+
+(define STEP (/ 2 5))
+(define TRIVIAL-SIZE 5)
+
+
+;; Function Defintion:
+
+;; Number -> Image
+;; produce the fractal circle patterns given a number using generative recursion
+(check-expect (circleFrac (/ TRIVIAL-SIZE STEP))
+              (local [(define centre (circle (/ TRIVIAL-SIZE STEP) "solid" "blue"))
+                      (define leaf-centre (circle TRIVIAL-SIZE "solid" "blue"))]
+                (above leaf-centre
+                       (beside (rotate 90 leaf-centre) centre (rotate -90 leaf-centre))
+                       (rotate 180 leaf-centre))))
+(check-expect (circleFrac (/ TRIVIAL-SIZE (sqr STEP)))
+              (local [(define centre (circle (/ TRIVIAL-SIZE (sqr STEP)) "solid" "blue"))
+                      (define leaf-centre (circle (/ TRIVIAL-SIZE STEP) "solid" "blue"))
+                      (define leaf-leaf (circle TRIVIAL-SIZE "solid" "blue"))
+                      (define leaf (above leaf-leaf
+                                          (beside (rotate 90 leaf-leaf) leaf-centre (rotate -90 leaf-leaf))))]
+                (above leaf
+                       (beside (rotate 90 leaf) centre (rotate -90 leaf))
+                       (rotate 180 leaf))))
+                      
+;(define (circleFrac n) (circle 0 "solid" "white"))
+
+(define (circleFrac n)
+  (local [(define centre (circle n "solid" "blue"))
+          (define leafs (top-leaf (* n STEP)))]
+    (above leafs
+           (beside (rotate 90 leafs) centre (rotate -90 leafs))
+           (rotate 180 leafs))))
+
+
+;; Number -> Image
+;; produce the top leaf recursively
+(check-expect (top-leaf TRIVIAL-SIZE) (circle TRIVIAL-SIZE "solid" "blue"))
+(check-expect (top-leaf (/ TRIVIAL-SIZE STEP)) (local [(define leaf (circle TRIVIAL-SIZE "solid" "blue"))
+                                                       (define centre (circle (/ TRIVIAL-SIZE STEP) "solid" "blue"))]
+                                                 (above leaf
+                                                        (beside (rotate 90 leaf) centre (rotate -90 leaf)))))
+
+;(define (top-leaf s) (circle 0 "solid" "white"))
+
+;; TERMINATION ARGUMENT
+;;  Base case: (<= s TRIVIAL-SIZE)
+;;  Reduction step: (top-leaf (* s STEP))
+;;  As long as TRIVIAL-SIZE is > 0 and s starts off > 0,
+;;    each reduction step will eventually reduce s to TRIVIAL-SIZE
+(define (top-leaf s)
+  (cond [(<= s TRIVIAL-SIZE)
+         (circle TRIVIAL-SIZE "solid" "blue")]
+        [else
+         (local [(define leaf (top-leaf (* s STEP)))
+                 (define centre (circle s "solid" "blue"))]
+           (above leaf
+                  (beside (rotate 90 leaf) centre (rotate -90 leaf))))]))

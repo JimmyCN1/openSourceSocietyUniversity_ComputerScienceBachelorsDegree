@@ -1,0 +1,14 @@
+
+PROBLEM:
+
+Base case: (<= s CUTOFF)
+
+Reduction step: (/ s 3)
+
+Argument that repeated application of reduction step will eventually 
+reach the base case:
+
+As long as cutoff is > 0 and s starts > 0, repeated division of s
+by 3 will eventually be less than cutoff.
+
+

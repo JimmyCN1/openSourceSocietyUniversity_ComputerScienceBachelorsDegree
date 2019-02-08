@@ -1,0 +1,106 @@
+(require 2htdp/image)
+(require 2htdp/universe)
+
+;; cantor-starter.rkt
+
+; 
+; PROBLEM:
+; 
+; A Cantor Set is another fractal with a nice simple geometry.
+; The idea of a Cantor set is to have a bar (or rectangle) of
+; a certain width w, then below that are two recursive calls each
+; of 1/3 the width, separated by a whitespace of 1/3 the width.
+; 
+; So this means that the
+;   width of the whitespace   wc  is  (/ w 3)
+;   width of recursive calls  wr  is  (/ (- w wc) 2)
+;   
+; To make it look better a little extra whitespace is put between
+; the bars.
+; 
+; 
+; Here are a couple of examples (assuming a reasonable CUTOFF)
+; 
+; (cantor CUTOFF) produces:
+; 
+; .
+; 
+; (cantor (* CUTOFF 3)) produces:
+; 
+; .
+; 
+; And that keeps building up to something like the following. So
+; as it goes it gets wider and taller of course.
+; 
+; .
+; 
+; 
+; PROBLEM A:
+; 
+; Design a function that consumes a width and produces a cantor set of 
+; the given width.
+; 
+; 
+; PROBLEM B:
+; 
+; Add a second parameter to your function that controls the percentage 
+; of the recursive call that is white each time. Calling your new function
+; with a second argument of 1/3 would produce the same images as the old 
+; function.
+; 
+; PROBLEM C:
+; 
+; Now you can make a fun world program that works this way:
+;   The world state should simply be the most recent x coordinate of the mouse.
+;   
+;   The to-draw handler should just call your new cantor function with the
+;   width of your MTS as its first argument and the last x coordinate of
+;   the mouse divided by that width as its second argument.
+;   
+; 
+; 
+
+
+;; Constants
+
+(define CUTOFF   2)
+(define HEIGHT  20)
+(define SPACING 15)
+
+;; Number -> Image
+;; produce cantor set given a width
+(check-expect (cantor CUTOFF) (rectangle CUTOFF HEIGHT "solid" "blue"))
+(check-expect (cantor (* CUTOFF 2))
+              (local [(define width (* CUTOFF 2))
+                      (define thirds (/ (* CUTOFF 2) 3))
+                      (define block (rectangle width HEIGHT "solid" "blue"))
+                      (define gap-block (rectangle width SPACING "solid" "white"))
+                      (define whitespace (rectangle thirds HEIGHT "solid" "white"))
+                      (define sub-block (rectangle thirds HEIGHT "solid" "blue"))]
+                (above block
+                       gap-block
+                       (beside sub-block whitespace sub-block))))
+
+;(define (cantor w) (square 0 "solid" "white"))
+
+;; TERMINATION ARGUMENT
+;;  Base case: (<= w CUTOFF)
+;;  Reduction step: (cantor (/ w 3))
+;;    As long as cutoff is > 0 and w starts > 0
+;;    then each reduction step will eventually reduce
+;;    w to <= cutoff
+
+(define (cantor w)
+  (cond [(<= w CUTOFF)
+         (rectangle w HEIGHT "solid" "blue")]
+        [else
+         (local [(define thirds (/ w 3))
+                 (define block (rectangle w HEIGHT "solid" "blue"))
+                 (define gap-block (rectangle w SPACING "solid" "white"))
+                 (define whitespace (rectangle thirds HEIGHT "solid" "white"))
+                 (define sub-block (cantor (/ w 3)))]
+           (above block
+                  gap-block
+                  (beside sub-block whitespace sub-block)))]))
+
+

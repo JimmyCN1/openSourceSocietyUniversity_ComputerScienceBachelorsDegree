@@ -1,0 +1,19 @@
+
+
+PROBLEM:
+
+Construct a three part termination argument for scarpet.
+
+Base case: (= n 1)
+
+Reduction step (next problem):
+
+  if n is even     (/ n 2)
+  if n is odd      (+ 1 (* n 3))
+
+     
+Argument that repeated application of reduction step will eventually 
+reach the base case:
+
+THIS IS A TRICK PROBLEM!
+     
