@@ -1,0 +1,240 @@
+(require 2htdp/image)
+(require racket/list)
+
+;  PROBLEM 1:
+;  
+;  In the lecture videos we designed a function to make a Sierpinski triangle fractal. 
+;  
+;  Here is another geometric fractal that is made of circles rather than triangles:
+;  
+;  .
+;  
+;  Design a function to create this circle fractal of size n and colour c.
+;  
+
+
+(define CUTOFF 2)
+
+;; Natural String -> Image
+;; produce a circle fractal of size n and colour c
+(check-expect (circle-fractal CUTOFF "black")
+              (circle CUTOFF "outline" "black"))
+(check-expect (circle-fractal (* CUTOFF 2) "black")
+              (overlay (circle (* CUTOFF 2) "outline" "black")
+                       (beside (circle CUTOFF "outline" "black")
+                               (circle CUTOFF "outline" "black"))))
+
+(define (circle-fractal n c)
+  (cond [(<= n CUTOFF)
+         (circle n "outline" c)]
+        [else
+         (overlay (circle n "outline" c)
+                  (local [(define sub (circle-fractal (/ n 2) c))]
+                    (beside sub sub)))]))
+
+
+
+
+
+;  PROBLEM 2:
+;  
+;  Below you will find some data definitions for a tic-tac-toe solver. 
+;  
+;  In this problem we want you to design a function that produces all 
+;  possible filled boards that are reachable from the current board. 
+;  
+;  In actual tic-tac-toe, O and X alternate playing. For this problem
+;  you can disregard that. You can also assume that the players keep 
+;  placing Xs and Os after someone has won. This means that boards that 
+;  are completely filled with X, for example, are valid.
+;  
+;  Note: As we are looking for all possible boards, rather than a winning 
+;  board, your function will look slightly different than the solve function 
+;  you saw for Sudoku in the videos, or the one for tic-tac-toe in the 
+;  lecture questions. 
+;  
+
+
+;; Value is one of:
+;; - false
+;; - "X"
+;; - "O"
+;; interp. a square is either empty (represented by false) or has and "X" or an "O"
+
+(define (fn-for-value v)
+  (cond [(false? v) (...)]
+        [(string=? v "X") (...)]
+        [(string=? v "O") (...)]))
+
+;; Pos is Natural[0, 8]
+;; inter. the index of all the positions in the board list
+(define P1 0)
+(define P2 1)
+
+;; Board is (listof Value)
+;; a board is a list of 9 Values
+(define B0 (list false false false
+                 false false false
+                 false false false))
+
+(define B1 (list false "X"   "O"   ; a partly finished board
+                 "O"   "X"   "O"
+                 false false "X")) 
+
+(define B2 (list "X"  "X"  "O"     ; a board where X will win
+                 "O"  "X"  "O"
+                 "X" false "X"))
+
+(define B3 (list "X" "O" "X"       ; a board where Y will win
+                 "O" "O" false
+                 "X" "X" false))
+
+(define B4 (list "X" "O" "X"       ; a finished board
+                 "O" "O" "O"
+                 "X" "X" "O"))
+
+(define (fn-for-board b)
+  (cond [(empty? b) (...)]
+        [else 
+         (... (fn-for-value (first b))
+              (fn-for-board (rest b)))]))
+
+
+;; Function Definitions: 
+
+;; Board -> (listof Board)
+;; produce a list of all possible endgame boards from the given board
+(check-expect (complete (list "X"  "X"  "O"
+                              "O"  "X"  "O"
+                              "X" false "X"))
+              (list
+               (list "X"  "X"  "O"
+                     "O"  "X"  "O"
+                     "X"  "X"  "X")
+               (list "X"  "X"  "O"
+                     "O"  "X"  "O"
+                     "X"  "O"  "X")))
+(check-expect (complete (list "X" "O" "X"
+                              "O" "O" false
+                              "X" "X" false))
+              (list
+               (list "X" "O" "X"
+                     "O" "O" "X"
+                     "X" "X" "X")
+               (list "X" "O" "X"
+                     "O" "O" "X"
+                     "X" "X" "O")
+               (list "X" "O" "X"
+                     "O" "O" "O"
+                     "X" "X" "X")
+               (list "X" "O" "X"
+                     "O" "O" "O"
+                     "X" "X" "O")))
+
+(define (complete b)                                        ;generative recursion and arb-arity tree composition
+  (local [(define (complete--b b)
+            (if (full? b)
+                b
+                (complete--lob (next-boards b))))
+
+          (define (complete--lob lob)
+            (cond [(empty? lob) lob]
+                  [else
+                   (cons (complete--b (first lob))
+                         (complete--lob (rest lob)))]))]
+
+    (complete--b b)))
+
+
+;; Board -> Boolean
+;; produce true if board is finished
+(check-expect (full? B3) false)
+(check-expect (full? B4) true)
+
+(define (full? b)
+  (andmap string? b))
+
+
+;; Board -> (listof Board)
+;; produce two new boards which contain "X"|"O" in the first empty position
+;; ASSUME: board has atleast one empty position remaining
+(check-expect (next-boards (list "X" "O" "X"
+                                 "O" "O" false
+                                 "X" "X" false))
+              (list
+               (list "X" "O" "X"
+                     "O" "O" "X"
+                     "X" "X" false)
+               (list "X" "O" "X"
+                     "O" "O" "O"
+                     "X" "X" false)))
+
+(define (next-boards b)
+  (place-values (find-blank b) b))
+
+
+;; Board -> Pos
+;; produce the positions of the blank values on the board
+(check-expect (find-blank B0) 0)
+(check-expect (find-blank B2) 7)
+
+(define (find-blank b)
+  (cond [(empty? b) (error "Board didn't have blank space")]                   ;BASE CASE
+        [else
+         (if (false? (first b))
+             0
+             (+ 1 (find-blank (rest b))))]))
+
+
+;; Pos Board -> (listof Board)
+;; produce two new boards with the first board recieving
+;;  an "X" in the given position and the second recieving a "O"
+(check-expect (place-values 0 B0)
+              (list
+               (list "X" false false
+                     false false false
+                     false false false)
+               (list "O" false false
+                     false false false
+                     false false false)))
+
+(define (place-values p b)
+  (list (fill-square b p "X")
+        (fill-square b p "O")))
+
+
+
+;; Board Pos -> Val or false
+;; Produce value at given position on board.
+(check-expect (read-square B2 3) "O")
+(check-expect (read-square B3 7) "X")
+(check-expect (read-square B1 6) false)
+
+(define (read-square b p)
+  (list-ref b p))               
+
+
+;; Board Pos Val -> Board
+;; produce new board with val at given position
+(check-expect (fill-square B0 0 "X")
+              (cons "X" (rest B0)))
+
+(define (fill-square b p nv)
+  (append (take b p)
+          (list nv)
+          (drop b (add1 p))))
+
+
+;  PROBLEM 3:
+;  
+;  Now adapt your solution to filter out the boards that are impossible if 
+;  X and O are alternating turns. You can continue to assume that they keep 
+;  filling the board after someone has won though. 
+;  
+;  You can assume X plays first, so all valid boards will have 5 Xs and 4 Os.
+;  
+;  NOTE: make sure you keep a copy of your solution from problem 2 to answer 
+;  the questions on edX.
+;  
+
+
