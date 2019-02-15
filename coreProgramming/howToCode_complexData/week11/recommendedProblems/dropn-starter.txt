@@ -1,0 +1,32 @@
+
+;; dropn-starter.rkt
+
+; 
+; PROBLEM:
+; 
+; Design a function that consumes a list of elements lox and a natural number
+; n and produces the list formed by dropping every nth element from lox.
+; 
+; (dropn (list 1 2 3 4 5 6 7) 2) should produce (list 1 2 4 5 7)
+; 
+
+
+;; (listof Natural) -> (listof Natural)
+;; produce list of naturals from given list, ommiting every nth element from the given box
+(check-expect (dropn empty 2) empty)
+(check-expect (dropn (list 1 2 3 4 5 6 7) 0) empty)
+(check-expect (dropn (list 1 2 3 4 5 6 7) 2) (list 1 2 4 5 7))
+(check-expect (dropn (list 1 2 3 4 5 6 7 11 23 39) 3) (list 1 2 3 5 6 7 23 39))
+
+(define (dropn lon0 n)
+  (local [(define (dropn lon n acc)
+            ; acc is the count of the elements seen in lon0 so far
+            (cond [(empty? lon) empty]
+                  [else
+                   (if (not (= n acc))
+                       (cons
+                        (first lon)
+                        (dropn (rest lon) n (add1 acc)))
+                       (dropn (rest lon) n 0))]))]
+
+    (dropn lon0 n 0)))

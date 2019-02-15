@@ -1,0 +1,30 @@
+
+;; average-starter.rkt
+
+; 
+; PROBLEM:
+; 
+; Design a function called average that consumes (listof Number) and produces the
+; average of the numbers in the list.
+; 
+
+
+;; (listof Natural) -> Natural
+;; produce the average of all the numbers in a given list
+(check-expect (avg-list empty) empty)
+(check-expect (avg-list (list 1)) 1)
+(check-expect (avg-list (list 2 2 2)) 2)
+(check-expect (avg-list (list 10 20)) 15)
+(check-expect (avg-list (list 10 20 30)) 20)
+
+(define (avg-list lon0)
+  ; sum is Natural accumulator which records the sum of all the elements in lon0
+  ; count is a Natural accumulator which records the count of the elements so far in lon0
+  (local [(define (avg-list lon sum count)
+  (cond [(empty? lon) (/ sum count)]
+        [else
+         (avg-list (rest lon)
+                   (+ sum (first lon))
+                   (add1 count))]))]
+
+    (avg-list lon0 0 0)))

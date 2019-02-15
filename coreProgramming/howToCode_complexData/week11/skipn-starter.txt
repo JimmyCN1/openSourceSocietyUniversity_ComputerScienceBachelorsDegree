@@ -1,0 +1,42 @@
+
+;; skipn-starter.rkt
+
+; 
+; PROBLEM:
+; 
+; Design a function that consumes a list of elements lox and a natural number
+; n and produces the list formed by including the first element of lox, then 
+; skipping the next n elements, including an element, skipping the next n 
+; and so on.
+; 
+;  (skipn (list "a" "b" "c" "d" "e" "f") 2) should produce (list "a" "d")
+; 
+
+
+;; (listof X) -> (listof X)
+;; produce a (listof X) which only contains the numbers skipn lands on
+(check-expect (skipn empty 4) empty)
+(check-expect (skipn (list "a" "b" "c" "d" "e" "f") 0)
+              (list "a" "b" "c" "d" "e" "f"))
+(check-expect (skipn (list "a" "b" "c" "d" "e" "f") 2)
+              (list "a" "d"))
+(check-expect (skipn (list "a" "b" "c" "d" "e" "f") 1)
+              (list "a" "c" "e"))
+
+(define (skipn lox0 n)
+  ;; acc: Natural; 1-based position of (first lox) in lox0
+  ;; (skipn (list "a" "b" "c" "d") 2)  ;outer call
+  ;;
+  ;; (skipn (list "a" "b" "c" "d") 1)  ;include 
+  ;; (skipn (list     "b" "c" "d") 2)  ;dont't include
+  ;; (skipn (list         "c" "d") 3)  ;dont't include
+  ;; (skipn (list             "d") 4)  ;include
+  (local [(define (skipn lox n acc)
+            (cond [(empty? lox) empty]
+                  [else
+                   (if (or (zero? n)
+                           (= (modulo acc (+ n 1)) 1))
+                       (cons (first lox)
+                             (skipn (rest lox) n (add1 acc)))
+                       (skipn (rest lox) n (add1 acc)))]))]
+    (skipn lox0 n 1)))
