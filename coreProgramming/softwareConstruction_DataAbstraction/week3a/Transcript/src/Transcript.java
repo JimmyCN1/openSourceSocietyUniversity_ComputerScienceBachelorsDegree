@@ -1,5 +1,3 @@
-package model;
-
 public class Transcript {
 
     // REQUIRES: given course must in the database, 0 <= grade <= 4
@@ -22,11 +20,8 @@ public class Transcript {
     // EFFECTS: returns the calculated GPA
     public double getGPA(){ return 0.0; }
 
+
 }
 
 
 
-// MODIFIES: this
-// EFFECTS: inserts num if not already there
-    //      if num is there, does nothing
-public void insert(Integer num) { []; }
