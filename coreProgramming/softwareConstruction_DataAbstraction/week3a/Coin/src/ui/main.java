@@ -4,7 +4,7 @@ import model.Coin;
 
 public class main {
 
-    public static final int FLIP_COUNT = 100;
+    public static final int FLIP_COUNT = 1000;
 
     public static void main(String[] args) {
 
@@ -13,8 +13,12 @@ public class main {
 
         for(int flips = 0; flips < FLIP_COUNT; flips++) {
             coin1.flipCoin();
-            System.out.println(coin1.getCoinStatus());
+            coin1.printCoinStatus();
+            coin1.printStreaks();
+            coin1.getLongestStreak();
         }
+
+        coin1.printLongestStreak();
 
 
 
