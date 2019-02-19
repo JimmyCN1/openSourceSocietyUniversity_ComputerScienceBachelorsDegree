@@ -1,21 +1,18 @@
 package test;
 
-import model.Course;
 import model.Transcript;
-
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map;
 
+import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
 
 public class TranscriptTest {
 
     private Transcript testTranscript;
+    private HashMap<String, Double> testGrades;
 
     @Before
     public void setUp(){
@@ -49,7 +46,7 @@ public class TranscriptTest {
     //TODO: outcome: Transcript has its sudentID updated
     @Test
     public void testSetStudentID() {
-        //check that the student ID is an int
+        //check that the student ID is an Integer
         assertTrue(testTranscript.getStudentID() instanceof Integer);
         Integer initialID = testTranscript.getStudentID();
 
@@ -84,26 +81,29 @@ public class TranscriptTest {
         assertTrue(id.equals(34569));
     }
 
-    //TODO: Test Get Course And Grade Course Exists: return the course and the corresponding grade given a course name
+    //TODO: Test Get Course And Grade When Course Exists: return the course and the corresponding grade given a course name
     //TODO: outcome: return a string which includes the course name and the gpa obtained in that course
     @Test
-    public void testGetCourseAndGradeCourseExists() {
-        //make list with course included
-        Map<String, Integer> courseGrade = new HashMap<String, Integer>();
-        courseGrade.put(this.course = course, this.gpa = gpa);
-        ArrayList<Course> courses = new ArrayList<Course>(("English", 3.9), ("Math", 2.4));
-        //check that the course is in the list
+    public void testGetCourseAndGradeWhenCourseExists() {
+        //check that the course is in the hash map
+        assertTrue(testTranscript.containsCourse("English"));
 
-        //retrieve tha course and grade from the list
+        //retrieve tha course and grade from the hash map
+        HashMap<String, Double> testMap;
+        testMap = testTranscript.getCourseAndGrade("English");
+        assertTrue(testMap.containsKey("English") && testMap.get("English") == 3.2);
     }
 
 
-    //TODO: Test Get Course And Grade No Course: return error message since course is not in transcript
+    //TODO: Test Get Course And Grade When No Course: return error message since course is not in transcript
     //TODO: outcome: return error
     @Test
-    public void testGetCourseAndGradeNoCourse() {
-        //check that the course is not in the list
-        //return error message
+    public void testGetCourseAndGradWhenNoCourse() {
+        //check that the course is not in the hash map
+        assertFalse(testTranscript.containsCourse("Home Economics"));
+
+        // try and fail to retrieve course and grade from the hash map
+
     }
 
     //TODO: Test Get GPA: return the calculated GPA of the transcript
@@ -117,18 +117,18 @@ public class TranscriptTest {
     //TODO: outcome: add course and grade to the transcript
     @Test
     public void testAddCourseAndGradeNoCourse() {
-        //check that the course isn't already in the list
-        //add the course and corresponding score to the list
-        //check that the course and score were added to the list
+        //check that the course isn't already in the hash map
+        //add the course and corresponding score to the hash map
+        //check that the course and score were added to the hash map
     }
 
     //TODO: Test Add Course And Grade Already Course
     //TODO: outcome: leave transcript unchanged
     @Test
     public void testAddCourseAndGradeAlreadyCourse() {
-        //check that the course already exists in the list
+        //check that the course already exists in the hash map
         //return error message
-        //check that the list remains unchanged
+        //check that the hash map remains unchanged
     }
 
     //TODO: Test Add Course And In Bounds Grade
@@ -136,8 +136,8 @@ public class TranscriptTest {
     @Test
     public void testAddCourseAndInBoundsGrade() {
         //check that the given grade is a valid gpa
-        //add the course and corresponding score to the list
-        //check that the course and score were added to the list
+        //add the course and corresponding score to the hash map
+        //check that the course and score were added to the hash map
     }
 
     //TODO: Test Add Course And Out Of Bounds Grade
@@ -146,7 +146,7 @@ public class TranscriptTest {
     public void testAddCourseAndOutOfBoundsGrade() {
         //check that the given grade is not a valid gpa
         //return error message
-        //check that the list remains unchanged
+        //check that the hash map remains unchanged
     }
 }
 

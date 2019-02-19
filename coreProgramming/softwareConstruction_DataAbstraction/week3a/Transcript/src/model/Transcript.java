@@ -1,11 +1,11 @@
 package model;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Transcript {
     private String studentName;
     private Integer studentID;
-    private ArrayList<Course> Courses = new ArrayList<Course>();
+    private HashMap<String, Double> courseListWithGrades; // = new HashMap<String, Double>();
 
     public Transcript(String studentName, int studentID) {
         this.studentName = studentName;
@@ -28,15 +28,15 @@ public class Transcript {
 
     // REQUIRES: transcript to have given course already recorded
     // EFFECTS: returns the course and grade of a given course
-    public String getCourseAndGrade(String course) { return null; }
+    public HashMap<String, Double> getCourseAndGrade(String course) { return null; }
 
     // EFFECTS: returns the calculated GPA
-    public double getGPA(){ return 0.0; }
+    public Double getGPA(){ return 0.0; }
 
     // REQUIRES: given course must in the database, 1.0 <= grade <= 4.0
     // MODIFIES: this
     // EFFECTS: adds new subject with its corresponding grade to a list
-    public void addCourseAndGrade(String course, double grade) { }
+    public void addCourseAndGrade(String course, Double grade) { }
 
     // EFFECTS: gets transcript and prints it to the console with correct formatting
     public void printTranscript() { }
