@@ -120,7 +120,7 @@ public class TranscriptTest {
         //check that the course is in the hash map
         assertTrue(testTranscript.containsCourse("English"));
 
-        assertEquals(testTranscript.sizeOfTranscript(), 3);
+        assertTrue(testTranscript.sizeOfTranscript() == 3);
         //check that an Integer is returned
         //assertTrue(testTranscript.getGPA() instanceof Integer);
     }
@@ -129,18 +129,32 @@ public class TranscriptTest {
     //TODO: outcome: add course and grade to the transcript
     @Test
     public void testAddCourseAndGradeNoCourse() {
-        //check that the course isn't already in the hash map
+        //check that the course is not in the hash map
+        assertFalse(testTranscript.containsCourse("Home Economics"));
+        assertTrue(testTranscript.sizeOfTranscript() == 3);
+
         //add the course and corresponding score to the hash map
+        testTranscript.addCourseAndGrade("Home Economics", 3.8);
+
         //check that the course and score were added to the hash map
+        assertTrue(testTranscript.sizeOfTranscript() == 4);
+        assertTrue(testTranscript.getCourseAndGrade("Home Economics").get("Home Economics") == 3.8);
     }
 
     //TODO: Test Add Course And Grade Already Course
     //TODO: outcome: leave transcript unchanged
     @Test
     public void testAddCourseAndGradeAlreadyCourse() {
-        //check that the course already exists in the hash map
-        //return error message
+        //check that the course is not in the hash map
+        assertTrue(testTranscript.containsCourse("English"));
+        assertTrue(testTranscript.sizeOfTranscript() == 3);
+
+        //add the course and corresponding score to the hash map
+        testTranscript.addCourseAndGrade("English", 3.7);
+
         //check that the hash map remains unchanged
+        assertTrue(testTranscript.sizeOfTranscript() == 3);
+        assertTrue(testTranscript.getCourseAndGrade("English").get("English") == 3.2);
     }
 
     //TODO: Test Add Course And In Bounds Grade
@@ -148,8 +162,15 @@ public class TranscriptTest {
     @Test
     public void testAddCourseAndInBoundsGrade() {
         //check that the given grade is a valid gpa
+        assertTrue(0.0 < 3.0 && 3.0 < 4.0);
+        assertTrue(testTranscript.sizeOfTranscript() == 3);
+
         //add the course and corresponding score to the hash map
+        testTranscript.addCourseAndGrade("Home Economics", 3.0);
+
         //check that the course and score were added to the hash map
+        assertTrue(testTranscript.sizeOfTranscript() == 4);
+        assertTrue(testTranscript.getCourseAndGrade("Home Economics").get("Home Economics") == 3.0);
     }
 
     //TODO: Test Add Course And Out Of Bounds Grade
@@ -157,8 +178,13 @@ public class TranscriptTest {
     @Test
     public void testAddCourseAndOutOfBoundsGrade() {
         //check that the given grade is not a valid gpa
-        //return error message
+        assertFalse(0.0 < 5.2 && 5.2 < 4.0);
+
+        //add the course and the corresponding function to the hash map
+        testTranscript.addCourseAndGrade("Home Economics", 5.2);
+
         //check that the hash map remains unchanged
+        assertTrue(testTranscript.sizeOfTranscript() == 3);
     }
 }
 

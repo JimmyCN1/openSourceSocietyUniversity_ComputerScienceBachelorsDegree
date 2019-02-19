@@ -55,7 +55,11 @@ public class Transcript {
     // REQUIRES: given course must in the database, 1.0 <= grade <= 4.0
     // MODIFIES: this
     // EFFECTS: adds new subject with its corresponding grade to a list
-    public void addCourseAndGrade(String course, Double grade) { this.courseListWithGrades.put(course, grade); }
+    public void addCourseAndGrade(String course, Double grade) {
+        if(!this.containsCourse(course) && grade > 0.0 && grade <= 4.0) {
+            this.courseListWithGrades.put(course, grade);
+        }
+    }
 
     // EFFECTS: gets transcript and prints it to the console with correct formatting
     public void printTranscript() {
