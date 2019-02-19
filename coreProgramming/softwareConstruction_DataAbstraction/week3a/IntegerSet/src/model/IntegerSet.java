@@ -14,5 +14,9 @@ public class IntegerSet {
     //          Otherwise, do nothing
     public void remove(Integer num) { }
 
+    // EFFECTS: if the integer is contained in the set, return true. Otherwise return false
+    public boolean contains(Integer num) { return false; }
 
+    // EFFECTS: returns the size of the set
+    public int size() { return 0; }
 }
