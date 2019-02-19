@@ -5,8 +5,13 @@ import java.util.Random;
 
 
 public class Coin {
-
     private String coinStatus;
+
+    // EFFECTS: returns coinStatus
+    public String getCoinStatus() { return this.coinStatus; }
+
+    //EFFECTS: sets coinStatus
+    public void setCoinStatus(String status) { this.coinStatus = status; }
 
     // MODIFIES: this
     // EFFECTS: sets the status of the coin to heads or tails
@@ -15,14 +20,9 @@ public class Coin {
         Integer booleanCoin;
         booleanCoin = random.nextInt(2);
         if (booleanCoin == 0) {
-            this.coinStatus = "heads";
+            setCoinStatus("heads");
         } else {
-            this.coinStatus = "tails";
+            setCoinStatus("tails");
         }
     }
-
-    // EFFECTS: returns coinStatus
-    public String checkCoinStatus() { return this.coinStatus; }
-
-
 }

@@ -23,9 +23,6 @@ public class IntegerSetTest {
         checkSetContainsOnce(3);
     }
 
-    private void assertTrue(boolean contains) {
-    }
-
 
     @Test
     public void testInsertAlreadyThere() {
@@ -38,7 +35,7 @@ public class IntegerSetTest {
     }
 
 
-    private void checkSetEmptyDoesntContain(int num ) {
+    private void checkSetEmptyDoesntContain(int num) {
         assertEquals(testSet.size(), 0);
         assertFalse(testSet.contains(3));
     }

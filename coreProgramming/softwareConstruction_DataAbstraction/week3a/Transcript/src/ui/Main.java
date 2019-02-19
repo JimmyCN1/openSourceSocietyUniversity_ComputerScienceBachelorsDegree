@@ -9,21 +9,21 @@ public class Main {
         Transcript t3 = new Transcript("Jimmy", 343735);
         Transcript t4 = new Transcript("Abdul", 343725);
 
-        t1.addGrade("CPSC-210", 3.5);
-        t1.addGrade("ENGL-201", 4.0);
-        t1.addGrade("CPSC-110", 3.1);
+        t1.addCourseAndGrade("CPSC-210", 3.5);
+        t1.addCourseAndGrade("ENGL-201", 4.0);
+        t1.addCourseAndGrade("CPSC-110", 3.1);
 
-        t3.addGrade("English", 2.5);
-        t3.addGrade("Math", 3.5);
-        t3.addGrade("Science", 3.4);
-        t3.addGrade("Sports", 3.0);
-        t3.addGrade("Art", 2.0);
+        t3.addCourseAndGrade("English", 2.5);
+        t3.addCourseAndGrade("Math", 3.5);
+        t3.addCourseAndGrade("Science", 3.4);
+        t3.addCourseAndGrade("Sports", 3.0);
+        t3.addCourseAndGrade("Art", 2.0);
 
-        t4.addGrade("English", 3.3);
-        t4.addGrade("Math", 2.4);
-        t4.addGrade("Science", 2.8);
-        t4.addGrade("Sports", 2.8);
-        t4.addGrade("Art", 3.0);
+        t4.addCourseAndGrade("English", 3.3);
+        t4.addCourseAndGrade("Math", 2.4);
+        t4.addCourseAndGrade("Science", 2.8);
+        t4.addCourseAndGrade("Sports", 2.8);
+        t4.addCourseAndGrade("Art", 3.0);
 
         System.out.print(t1.getStudentName() + ": ");
         t1.printTranscript();
@@ -32,7 +32,7 @@ public class Main {
 
         System.out.println(t1.getCourseAndGrade());
 
-        t1.addGrade("Math", 4.0);
+        t1.addCourseAndGrade("Math", 4.0);
         t1.printTranscript();
 
         t1.setStudentID(872930000);
