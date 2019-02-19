@@ -30,7 +30,7 @@ public class Main {
 
         System.out.println(t1.getGPA());
 
-        System.out.println(t1.getCourseAndGrade());
+        System.out.println(t1.getCourseAndGrade("ENGL-201"));
 
         t1.addCourseAndGrade("Math", 4.0);
         t1.printTranscript();

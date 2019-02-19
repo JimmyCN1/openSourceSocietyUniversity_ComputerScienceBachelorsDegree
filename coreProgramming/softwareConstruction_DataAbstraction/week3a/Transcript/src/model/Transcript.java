@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class Transcript {
     private String studentName;
-    private int studentID;
-    private ArrayList<Subject> grades = new ArrayList<Subject>();
+    private Integer studentID;
+    private ArrayList<Course> Courses = new ArrayList<Course>();
 
     public Transcript(String studentName, int studentID) {
         this.studentName = studentName;
@@ -24,7 +24,7 @@ public class Transcript {
     public String getStudentName() { return this.studentName; }
 
     // EFFECTS: return the given student's ID
-    public int getStudentID() { return this.studentID; }
+    public Integer getStudentID() { return this.studentID; }
 
     // REQUIRES: transcript to have given course already recorded
     // EFFECTS: returns the course and grade of a given course
@@ -41,7 +41,11 @@ public class Transcript {
     // EFFECTS: gets transcript and prints it to the console with correct formatting
     public void printTranscript() { }
 
+    // EFFECTS: returns true if the given course is in the transcript
+    public boolean containsCourse(String course) { return false; }
 
+    // EFFECTS: returns the number of courses in the transcript
+    public int sizeOfTranscript() { return 0; }
 
 
 }

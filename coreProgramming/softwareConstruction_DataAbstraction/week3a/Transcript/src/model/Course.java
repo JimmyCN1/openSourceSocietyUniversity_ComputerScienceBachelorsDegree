@@ -1,8 +1,16 @@
 package model;
 
-public class Subject {
+import java.util.HashMap;
+import java.util.Map;
+
+public class Course {
     private String course;
-    private int gpa;
+    private Integer gpa;
+
+    public Course(String course, Integer gpa) {
+        Map<String, Integer> courseGrade = new HashMap<String, Integer>();
+        courseGrade.put(this.course = course, this.gpa = gpa);
+    }
 
     // GETTERS:
     public String getCourse() { return this.course; }
