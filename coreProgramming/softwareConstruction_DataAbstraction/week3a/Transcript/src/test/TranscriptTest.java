@@ -6,8 +6,7 @@ import org.junit.Test;
 
 import java.util.HashMap;
 
-import static junit.framework.TestCase.assertFalse;
-import static junit.framework.TestCase.assertTrue;
+import static junit.framework.TestCase.*;
 
 public class TranscriptTest {
 
@@ -109,7 +108,7 @@ public class TranscriptTest {
         testMap = testTranscript.getCourseAndGrade("Home Economics");
 
         //check that no course or gpa has been retrieved
-        assertFalse(testMap.containsKey("Home Economics"));
+        assertTrue(!testMap.containsKey("Home Economics"));
         //assertFalse(testMap.get("Home Economics") == null);
 
     }
@@ -121,7 +120,9 @@ public class TranscriptTest {
         //check that the course is in the hash map
         assertTrue(testTranscript.containsCourse("English"));
 
+        assertEquals(testTranscript.sizeOfTranscript(), 3);
         //check that an Integer is returned
+        //assertTrue(testTranscript.getGPA() instanceof Integer);
     }
 
     //TODO: Test Add Course And Grade No Course

@@ -29,7 +29,17 @@ public class Transcript {
 
     // REQUIRES: transcript to have given course already recorded
     // EFFECTS: returns the course and grade of a given course
-    public Double getCourseAndGrade(String course) { return this.courseListWithGrades.get(course); }
+    public HashMap<String, Double> getCourseAndGrade(String course) {
+        HashMap<String, Double> courseAndGrade = new HashMap<String, Double>();
+        if (this.courseListWithGrades.containsKey(course)) {
+            Double grade = this.courseListWithGrades.get(course);
+            courseAndGrade.put(course, this.courseListWithGrades.get(course));
+        }
+        return courseAndGrade;
+    }
+
+    // EFFECTS: return full transcript with grades for each course
+    public HashMap<String, Double> getCourseListWithGrades() { return this.courseListWithGrades; }
 
     // EFFECTS: returns the calculated GPA
     public Double getGPA(){
@@ -49,6 +59,8 @@ public class Transcript {
 
     // EFFECTS: gets transcript and prints it to the console with correct formatting
     public void printTranscript() {
+        System.out.println("Name: " + this.studentName);
+        System.out.println("ID: " + this.studentID);
         this.courseListWithGrades.forEach((course, grade) -> System.out.println(course + ": " + grade));
     }
 

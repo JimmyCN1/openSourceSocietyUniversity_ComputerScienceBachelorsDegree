@@ -25,20 +25,27 @@ public class Main {
         t4.addCourseAndGrade("Sports", 2.8);
         t4.addCourseAndGrade("Art", 3.0);
 
-        System.out.println(t1.getStudentName() + ": ");
         t1.printTranscript();
 
-        System.out.println(t1.getCourseAndGrade("ENGL-201"));
+        System.out.println("");
 
         System.out.println(t1.getGPA());
+        System.out.println(t3.getGPA());
+        System.out.println(t4.getGPA());
 
-        System.out.println(t3.getCourseAndGrade("Math"));
+        System.out.println("");
 
-        t3.addCourseAndGrade("Math", 4.0);
         t3.printTranscript();
+        System.out.println("");
+
+        t3.addCourseAndGrade("Economics", 4.0);
+        t3.printTranscript();
+        System.out.println(t3.getGPA());
+
+        System.out.println("");
 
         t1.setStudentID(872930000);
-        t1.getStudentID();
+        t1.printTranscript();
 
 
     }
