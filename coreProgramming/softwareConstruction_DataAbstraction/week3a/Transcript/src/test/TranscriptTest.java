@@ -88,9 +88,11 @@ public class TranscriptTest {
         //check that the course is in the hash map
         assertTrue(testTranscript.containsCourse("English"));
 
-        //retrieve tha course and grade from the hash map
+        //retrieve the course and grade from the hash map
         HashMap<String, Double> testMap;
         testMap = testTranscript.getCourseAndGrade("English");
+
+        //check that course and grade were correctly retrieved
         assertTrue(testMap.containsKey("English") && testMap.get("English") == 3.2);
     }
 
@@ -103,6 +105,12 @@ public class TranscriptTest {
         assertFalse(testTranscript.containsCourse("Home Economics"));
 
         // try and fail to retrieve course and grade from the hash map
+        HashMap<String, Double> testMap;
+        testMap = testTranscript.getCourseAndGrade("Home Economics");
+
+        //check that no course or gpa has been retrieved
+        assertFalse(testMap.containsKey("Home Economics"));
+        //assertFalse(testMap.get("Home Economics") == null);
 
     }
 
@@ -110,6 +118,9 @@ public class TranscriptTest {
     //TODO: outcome: return calculated GPA
     @Test
     public void testGetGPA() {
+        //check that the course is in the hash map
+        assertTrue(testTranscript.containsCourse("English"));
+
         //check that an Integer is returned
     }
 
