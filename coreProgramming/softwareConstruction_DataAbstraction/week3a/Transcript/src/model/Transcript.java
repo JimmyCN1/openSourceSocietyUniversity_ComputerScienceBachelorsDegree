@@ -41,6 +41,25 @@ public class Transcript {
     // EFFECTS: return full transcript with grades for each course
     public HashMap<String, Double> getCourseListWithGrades() { return this.courseListWithGrades; }
 
+    //REQUIRE: at least one course selected
+    //EFFECTS: return the average gpa of the selected courses
+    public Double getAverageOfTheSelectedCourses(String... course) {
+        Double selectedGPA = 0.0;
+        HashMap<String, Double> selectedCourses = new HashMap<String, Double>();
+        for (Integer i = 0; i < course.length; i++) {
+            if (course.length == 0) {
+                return selectedGPA;
+            } else {
+                selectedCourses.put(course[i], this.getCourseAndGrade(course[i]).get(course[i]));
+                selectedGPA = selectedGPA + selectedCourses.get(course[i]);
+            }
+        }
+        if (course.length != 0) {
+            selectedGPA = selectedGPA / course.length;
+        }
+        return selectedGPA;
+    }
+
     // EFFECTS: returns the calculated GPA
     public Double getGPA(){
         ArrayList<Double> grades = new ArrayList<Double>();
@@ -66,6 +85,16 @@ public class Transcript {
         System.out.println("Name: " + this.studentName);
         System.out.println("ID: " + this.studentID);
         this.courseListWithGrades.forEach((course, grade) -> System.out.println(course + ": " + grade));
+        this.printGPA();
+    }
+
+    public void printAverageOfSeletedCourses(String... course) {
+        System.out.println("GPA for the selected courses: " + this.getAverageOfTheSelectedCourses(course));
+    }
+
+    // EFFECTS: print GPA
+    public void printGPA() {
+        System.out.println("\nGPA: " + this.getGPA());
     }
 
     // EFFECTS: returns true if the given course is in the transcript

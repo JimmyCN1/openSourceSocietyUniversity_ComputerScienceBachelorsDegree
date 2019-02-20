@@ -40,13 +40,13 @@ public class Main {
 
         t3.addCourseAndGrade("Economics", 4.0);
         t3.printTranscript();
-        System.out.println(t3.getGPA());
+        System.out.println("GPA: " + t3.getGPA());
 
         System.out.println("");
 
         t1.setStudentID(872930000);
         t1.printTranscript();
 
-
+        t4.printAverageOfSeletedCourses("English", "Science", "Art");
     }
 }

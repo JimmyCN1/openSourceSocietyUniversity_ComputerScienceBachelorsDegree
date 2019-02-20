@@ -31,8 +31,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ui/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="471">
-              <caret line="40" column="39" selection-start-line="40" selection-start-column="39" selection-end-line="40" selection-end-column="39" />
+            <state relative-caret-position="576">
+              <caret line="49" column="40" selection-start-line="49" selection-start-column="40" selection-end-line="49" selection-end-column="40" />
             </state>
           </provider>
         </entry>
@@ -40,10 +40,13 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/TranscriptTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2527">
-              <caret line="186" column="59" selection-start-line="186" selection-start-column="59" selection-end-line="186" selection-end-column="59" />
+            <state relative-caret-position="426">
+              <caret line="239" column="43" selection-start-line="239" selection-start-column="43" selection-end-line="239" selection-end-column="43" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#7404#7412#0" expanded="true" />
+                <element signature="e#8199#8207#0" expanded="true" />
+                <element signature="e#8862#8870#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -52,13 +55,15 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/model/Transcript.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="117">
-              <caret line="28" lean-forward="true" selection-start-line="28" selection-end-line="28" />
+            <state relative-caret-position="520">
+              <caret line="91" column="104" selection-start-line="91" selection-start-column="104" selection-end-line="91" selection-end-column="104" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#203#219#0" expanded="true" />
                 <element signature="e#1219#1235#0" expanded="true" />
+                <element signature="e#1917#1933#0" expanded="true" />
                 <element signature="e#1297#1305#0" expanded="true" />
+                <element signature="e#3860#3861#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -88,16 +93,16 @@
         <option value="$PROJECT_DIR$/src/model/IntegerSet.java" />
         <option value="$PROJECT_DIR$/src/model/Subject.java" />
         <option value="$PROJECT_DIR$/src/model/Course.java" />
+        <option value="$PROJECT_DIR$/src/test/TranscriptTest.java" />
         <option value="$PROJECT_DIR$/src/ui/Main.java" />
         <option value="$PROJECT_DIR$/src/model/Transcript.java" />
-        <option value="$PROJECT_DIR$/src/test/TranscriptTest.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" fullScreen="true">
-    <option name="y" value="23" />
-    <option name="width" value="1920" />
-    <option name="height" value="1120" />
+    <option name="x" value="1375" />
+    <option name="width" value="545" />
+    <option name="height" value="1200" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -226,56 +231,56 @@
       <option name="presentableId" value="Default" />
       <updated>1550470361225</updated>
       <workItem from="1550470362406" duration="7674000" />
-      <workItem from="1550527340306" duration="26619000" />
+      <workItem from="1550527340306" duration="31556000" />
     </task>
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="TranscriptTest_(1) - 2019.02.19 at 21h 17m 29s.xml">
+    <history-entry file="TranscriptTest_(1) - 2019.02.20 at 11h 48m 15s.xml">
       <configuration name="TranscriptTest (1)" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="TranscriptTest_(1) - 2019.02.19 at 22h 21m 00s.xml">
+    <history-entry file="TranscriptTest_(1) - 2019.02.20 at 11h 53m 51s.xml">
       <configuration name="TranscriptTest (1)" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="TranscriptTest_(1) - 2019.02.19 at 22h 21m 15s.xml">
+    <history-entry file="TranscriptTest_(1) - 2019.02.20 at 11h 59m 41s.xml">
       <configuration name="TranscriptTest (1)" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="TranscriptTest_(1) - 2019.02.19 at 22h 21m 25s.xml">
+    <history-entry file="TranscriptTest_(1) - 2019.02.20 at 12h 06m 11s.xml">
       <configuration name="TranscriptTest (1)" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="TranscriptTest_(1) - 2019.02.19 at 22h 27m 21s.xml">
+    <history-entry file="TranscriptTest_(1) - 2019.02.20 at 12h 19m 54s.xml">
       <configuration name="TranscriptTest (1)" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="TranscriptTest_(1) - 2019.02.19 at 22h 32m 17s.xml">
+    <history-entry file="TranscriptTest_(1) - 2019.02.20 at 12h 21m 18s.xml">
       <configuration name="TranscriptTest (1)" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="TranscriptTest_(1) - 2019.02.19 at 22h 38m 32s.xml">
+    <history-entry file="TranscriptTest_(1) - 2019.02.20 at 12h 21m 21s.xml">
       <configuration name="TranscriptTest (1)" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="TranscriptTest_(1) - 2019.02.19 at 22h 38m 34s.xml">
+    <history-entry file="TranscriptTest_(1) - 2019.02.20 at 12h 24m 00s.xml">
       <configuration name="TranscriptTest (1)" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="TranscriptTest_(1) - 2019.02.19 at 22h 51m 32s.xml">
+    <history-entry file="TranscriptTest_(1) - 2019.02.20 at 12h 24m 02s.xml">
       <configuration name="TranscriptTest (1)" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="TranscriptTest_(1) - 2019.02.19 at 22h 51m 46s.xml">
+    <history-entry file="TranscriptTest_(1) - 2019.02.20 at 12h 26m 45s.xml">
       <configuration name="TranscriptTest (1)" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="34293000" />
+    <option name="totallyTimeSpent" value="39230000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1920" height="1200" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.15867944" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15867944" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Favorites" order="3" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.32920355" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32920355" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4840708" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -312,13 +317,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ui/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="471">
-          <caret line="40" column="39" selection-start-line="40" selection-start-column="39" selection-end-line="40" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/model/Course.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="195">
@@ -326,25 +324,37 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/ui/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="576">
+          <caret line="49" column="40" selection-start-line="49" selection-start-column="40" selection-end-line="49" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/TranscriptTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2527">
-          <caret line="186" column="59" selection-start-line="186" selection-start-column="59" selection-end-line="186" selection-end-column="59" />
+        <state relative-caret-position="426">
+          <caret line="239" column="43" selection-start-line="239" selection-start-column="43" selection-end-line="239" selection-end-column="43" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#7404#7412#0" expanded="true" />
+            <element signature="e#8199#8207#0" expanded="true" />
+            <element signature="e#8862#8870#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/model/Transcript.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="117">
-          <caret line="28" lean-forward="true" selection-start-line="28" selection-end-line="28" />
+        <state relative-caret-position="520">
+          <caret line="91" column="104" selection-start-line="91" selection-start-column="104" selection-end-line="91" selection-end-column="104" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#203#219#0" expanded="true" />
             <element signature="e#1219#1235#0" expanded="true" />
+            <element signature="e#1917#1933#0" expanded="true" />
             <element signature="e#1297#1305#0" expanded="true" />
+            <element signature="e#3860#3861#0" expanded="true" />
           </folding>
         </state>
       </provider>

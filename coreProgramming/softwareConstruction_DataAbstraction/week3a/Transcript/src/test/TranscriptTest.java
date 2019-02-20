@@ -4,6 +4,7 @@ import model.Transcript;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import static junit.framework.TestCase.*;
@@ -185,6 +186,58 @@ public class TranscriptTest {
 
         //check that the hash map remains unchanged
         assertTrue(testTranscript.sizeOfTranscript() == 3);
+    }
+
+
+    //TODO: Test Get Average Of The Selected Courses
+    //TODO: outcome: return the average gpa of the selected courses
+    @Test
+    public void testGetAverageOfTheSelectedCourses() {
+        //check that at least one course is selected
+        ArrayList<Double> grades = new ArrayList<Double>();
+        grades.add(testTranscript.getCourseAndGrade("English").get("English"));
+        grades.add(testTranscript.getCourseAndGrade("Science").get("Science"));
+        assertEquals(grades.size(), 2);
+
+        // calculated the gpa of the selected courses
+        Double selectedCourseGPA = 0.0;
+        selectedCourseGPA =  testTranscript.getAverageOfTheSelectedCourses("English", "Science");
+
+        //check that the calculated average gpa is correct
+        assertEquals(selectedCourseGPA, 3.5);
+    }
+
+    //TODO: Test Get Average Of One Selected Course
+    //TODO: outcome: return the average gpa of the selected courses
+    @Test
+    public void testGetAverageOfOneSelectedCourse() {
+        //check that at one course is selected
+        ArrayList<Double> grades = new ArrayList<Double>();
+        grades.add(testTranscript.getCourseAndGrade("English").get("English"));
+        assertEquals(grades.size(), 1);
+
+        // calculated the gpa of the selected courses
+        Double selectedCourseGPA = 0.0;
+        selectedCourseGPA =  testTranscript.getAverageOfTheSelectedCourses("English");
+
+        //check that the calculated average gpa is correct
+        assertEquals(selectedCourseGPA, 3.2);
+    }
+
+    //TODO: Test Get Average Of No Selected Courses
+    //TODO: outcome: return 0.0
+    @Test
+    public void testGetAverageOfNoSelectedCourses() {
+        //check that no courses are selected
+        ArrayList<Double> grades = new ArrayList<Double>();
+        assertEquals(grades.size(), 0);
+
+        // calculated the gpa of the selected courses
+        Double selectedCourseGPA = 0.0;
+        selectedCourseGPA =  testTranscript.getAverageOfTheSelectedCourses();
+
+        //check that the calculated average gpa is correct
+        assertEquals(selectedCourseGPA, 0.0);
     }
 }
 
