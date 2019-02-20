@@ -55,7 +55,7 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/model/Transcript.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="520">
+            <state relative-caret-position="618">
               <caret line="91" column="104" selection-start-line="91" selection-start-column="104" selection-end-line="91" selection-end-column="104" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -231,7 +231,7 @@
       <option name="presentableId" value="Default" />
       <updated>1550470361225</updated>
       <workItem from="1550470362406" duration="7674000" />
-      <workItem from="1550527340306" duration="31556000" />
+      <workItem from="1550527340306" duration="31649000" />
     </task>
     <servers />
   </component>
@@ -268,7 +268,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="39230000" />
+    <option name="totallyTimeSpent" value="39323000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1920" height="1200" extended-state="0" />
@@ -280,7 +280,7 @@
       <window_info id="Favorites" order="3" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32920355" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32920355" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4840708" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -346,7 +346,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/model/Transcript.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="520">
+        <state relative-caret-position="618">
           <caret line="91" column="104" selection-start-line="91" selection-start-column="104" selection-end-line="91" selection-end-column="104" />
           <folding>
             <element signature="imports" expanded="true" />
