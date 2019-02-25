@@ -25,8 +25,8 @@ public class Meeting extends Event {
 
     //REQUIRES: email address is in the list of attendees
     //MODIFIES: this
-    //EFFECTS: removes a
-    public void removeEmailAddressedOfAttendees(String emailAddress) {
+    //EFFECTS: removes the invitee with the passed email address
+    public void removeEmailAddressesOfAttendees(String emailAddress) {
         if (this.emailAddressesOfAttendees.contains(emailAddress)) {
             for (String email : this.emailAddressesOfAttendees) {
                 if (email == emailAddress) {

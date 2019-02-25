@@ -2,17 +2,13 @@ package ui;
 
 import model.*;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
 
 public class main {
     public static void main(String[] args) {
-        Calender calender = new Calender(
-                LocalDateTime.now().toLocalDate(),
-                LocalDateTime.now().toLocalTime(),
-                "123@gmail.com");
+        Calender calender = new Calender("123@gmail.com");
 
-        Entry bday1 = new Event("2019-04-19","00:00","My Birthday",false,365);
+        Entry bday1 = new Event("2019-04-19","00:00","My Birthday",false,0);
         Entry bday2 = new Event("2019-03-11","07:00","bro1 bday",true,365);
         Entry bday3 = new Event("2019-03-18","16:00","bro2 bday",true,366);
 
@@ -23,7 +19,7 @@ public class main {
 
         Entry reminder1 = new Reminder("2019-12-31", "00:00", "newYearsEve", false, 0, "bring presents");
         Entry reminder2 = new Reminder("2019-10-15", "18:30", "donday", false, 0, "help yourself");
-        Entry reminder3 = new Reminder("2019-08-29", "13;40", "ag", true, 21, "ery 3 weeks");
+        Entry reminder3 = new Reminder("2019-08-29", "13:40", "ag", true, 21, "ery 3 weeks");
 
         calender.addEntry(bday1);
         calender.addEntry(bday2);
@@ -34,6 +30,16 @@ public class main {
         calender.addEntry(reminder2);
         calender.addEntry(reminder3);
 
-        calender.getFirstEntry();
+
+        Entry firstEntry = calender.getFirstEntry();
+        calender.printEntries();
+        calender.removeEntry(reminder3);
+        Entry entryWithLabel = calender.getEntryWithLabel("cake meeting");
+
+
+        meeting1.getEmailAddressesOfAttendees();
+
+        Entry m = calender.getEntryWithLabel("tyre meeting");
+        m.getEmailAddressesOfAttendees();
     }
 }

@@ -11,9 +11,9 @@ public class Calender {
     private String associatedEmail;
     private List<Entry> entries = new ArrayList<Entry>();
 
-    public Calender(LocalDate currentDate, LocalTime currentTime, String associatedEmail) {
-        this.currentDate = currentDate;
-        this.currentTime = currentTime;
+    public Calender(String associatedEmail) {
+        setDate();
+        setTime();
         this.associatedEmail = associatedEmail;
         this.entries = getEntries();
     }
@@ -25,8 +25,8 @@ public class Calender {
     public List<Entry> getEntries() { return this.entries; }
 
     //setters:
-    public void setDate(LocalDate currentDate) { this.currentDate = currentDate; }
-    public void setTime(LocalTime currentTime) { this.currentTime = currentTime; }
+    public void setDate() { this.currentDate = LocalDateTime.now().toLocalDate(); }
+    public void setTime() { this.currentTime = LocalDateTime.now().toLocalTime(); }
     public void setAssociatedEmail(String associatedEmail) { this.associatedEmail = associatedEmail; }
 
     //REQUIRES: list already in chronological order
@@ -34,6 +34,7 @@ public class Calender {
     //EFFECTS: adds one entry to the list of entries in chronological order
     public void addEntry(Entry entry) {
         List<Entry> newEntryList = new ArrayList<Entry>();
+        boolean added = false;
         if (this.entries.size() == 0) {
             this.entries.add(entry);
         }
@@ -41,8 +42,12 @@ public class Calender {
             for (Integer i = 0; i < this.entries.size(); i++) {
                 if (entry.getDate().isBefore(this.getEntries().get(i).getDate())) {
                     this.entries.add(i, entry);
+                    added = true;
                     break;
                 }
+            }
+            if (added == false) {
+                this.entries.add(entry);
             }
         }
     }
@@ -63,13 +68,13 @@ public class Calender {
 
     //REQUIRES: list must not be empty
     //EFFECTS: prints out every entry in the list
-//    public void printEntries() {
-//        if (this.entries.size() != 0) {
-//            for (Entry e : this.entries) {
-//                System.out.println("OurDateTime: " + e.getEntrysDate() + "\nTime: " + e.getEntrysTime() + "\nLabel: " + e.getLabel() + "\n");
-//            }
-//        }
-//    }
+    public void printEntries() {
+        if (this.entries.size() != 0) {
+            for (Entry e : this.entries) {
+                System.out.println("Date: " + e.getDate() + "\nTime: " + e.getTime() + "\nLabel: " + e.getLabel() + "\n");
+            }
+        }
+    }
 
     //REQUIRES: list must already be in chronological order
     //MODIFIES: this
