@@ -1,5 +1,8 @@
 package model;
 
+import java.sql.Time;
+import java.util.Date;
+
 public abstract class Entry {
     private Date date;
     private Time time;

@@ -1,6 +1,8 @@
 package model;
 
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Meeting extends Event {
@@ -31,6 +33,7 @@ public class Meeting extends Event {
             for (String email : this.emailAddressesOfAttendees) {
                 if (email == emailAddress) {
                     this.emailAddressesOfAttendees.remove(email);
+                    break;
                 }
             }
         }
