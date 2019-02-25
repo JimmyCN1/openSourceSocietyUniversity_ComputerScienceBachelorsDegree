@@ -1,14 +1,13 @@
 package model;
 
 import java.util.ArrayList;
-import java.time.*;
 import java.util.List;
 
 public class Meeting extends Event {
     private List<String> emailAddressesOfAttendees = new ArrayList<String>();
 
-    public Meeting(LocalDateTime dateTime, String label, boolean repeating, Integer repetitionInterval, LocalDateTime reminder, List<String> emailAddressesOfAttendees) {
-        super(dateTime, label, repeating, repetitionInterval, reminder);
+    public Meeting(String date, String time, String label, boolean repeating, Integer repetitionInterval, List<String> emailAddressesOfAttendees) {
+        super(date, time, label, repeating, repetitionInterval);
         this.emailAddressesOfAttendees = emailAddressesOfAttendees;
     }
 

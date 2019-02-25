@@ -1,15 +1,22 @@
 package model;
 
 import java.time.*;
+import java.time.format.DateTimeFormatter;
 
 public abstract class Entry {
-    private LocalDateTime entrysDate;
-    private LocalDateTime entrysTime;
+    private String entrysDate;
+    private String entrysTime;
     private String label;
     private boolean repeating;
     private Integer repetitionInterval;
 
-    public Entry(LocalDateTime entrysDate, LocalDateTime entrysTime, String label, boolean repeating, Integer repetitionInterval) {
+//    private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-d");
+    private LocalDate date = LocalDate.parse(this.entrysDate);
+
+    private DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+    private LocalTime time = LocalTime.parse(this.entrysTime, this.timeFormatter);
+
+    public Entry(String entrysDate, String entrysTime, String label, boolean repeating, Integer repetitionInterval) {
         this.entrysDate = entrysDate;
         this.entrysTime = entrysTime;
         this.label = label;
@@ -18,8 +25,8 @@ public abstract class Entry {
     }
 
     //getters:
-    public LocalDateTime getEntrysDate() { return this.entrysDate; }
-    public LocalDateTime getEntrysTime() { return this.entrysTime; }
+    public LocalDate getDate() { return this.date; }
+    public LocalTime getTime() { return this.time; }
     public String getLabel() { return this.label; }
     public boolean getRepeating() { return this.repeating; }
     public Integer getRepetitionInterval() { return this.repetitionInterval; }

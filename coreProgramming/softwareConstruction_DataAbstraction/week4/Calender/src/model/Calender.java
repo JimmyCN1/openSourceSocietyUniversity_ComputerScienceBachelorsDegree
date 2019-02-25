@@ -1,26 +1,17 @@
 package model;
 
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.time.*;
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class Calender {
-    private String currentDate;
-    private String currentTime;
+    private LocalDate currentDate;
+    private LocalTime currentTime;
     private String associatedEmail;
     private List<Entry> entries = new ArrayList<Entry>();
 
-    private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    private LocalDateTime date = LocalDateTime.parse(currentDate, dateFormatter);
-
-    private DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
-    private LocalDateTime time = LocalDateTime.parse(currentTime, timeFormatter);
-
-
-
-    public Calender(String currentDate, String currentTime, String associatedEmail) {
+    public Calender(LocalDate currentDate, LocalTime currentTime, String associatedEmail) {
         this.currentDate = currentDate;
         this.currentTime = currentTime;
         this.associatedEmail = associatedEmail;
@@ -28,14 +19,14 @@ public class Calender {
     }
 
     //getters:
-    public LocalDateTime getDate() { return this.date; }
-    public LocalDateTime getTime() { return this.time; }
+    public LocalDate getCurrentDate() { return this.currentDate; }
+    public LocalTime getCurrentTime() { return this.currentTime; }
     public String getAssociatedEmail() { return this.associatedEmail; }
     public List<Entry> getEntries() { return this.entries; }
 
     //setters:
-    public void setDate(LocalDateTime date) { this.date = date; }
-    public void setTime(LocalDateTime time) { this.time = time; }
+    public void setDate(LocalDate currentDate) { this.currentDate = currentDate; }
+    public void setTime(LocalTime currentTime) { this.currentTime = currentTime; }
     public void setAssociatedEmail(String associatedEmail) { this.associatedEmail = associatedEmail; }
 
     //REQUIRES: list already in chronological order
@@ -48,7 +39,7 @@ public class Calender {
         }
         if (!this.entries.contains(entry)) {
             for (Integer i = 0; i < this.entries.size(); i++) {
-                if (entry.getEntrysDate().before(this.getEntries().get(i).getEntrysDate())) {
+                if (entry.getDate().isBefore(this.getEntries().get(i).getDate())) {
                     this.entries.add(i, entry);
                     break;
                 }
