@@ -3,16 +3,12 @@
 //import java.text.DateFormatSymbols;
 //import java.text.ParseException;
 //import java.text.SimpleDateFormat;
+//import java.util.Date;
 //
-//public class Date {
-//    private Integer month;
-//    private Integer day;
-//    private Integer year;
+//public class OurDateTime {
+//    private Date datetime;
 //
-//    public Date(Integer month, Integer day, Integer year) {
-//        this.month = month;
-//        this.day = day;
-//        this.year = year;
+//    public OurDateTime() {
 //    }
 //
 //    //getters:

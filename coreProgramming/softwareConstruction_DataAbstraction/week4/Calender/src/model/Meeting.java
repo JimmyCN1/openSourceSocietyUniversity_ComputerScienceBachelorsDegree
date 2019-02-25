@@ -1,15 +1,14 @@
 package model;
 
-import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Date;
+import java.time.*;
 import java.util.List;
 
 public class Meeting extends Event {
     private List<String> emailAddressesOfAttendees = new ArrayList<String>();
 
-    public Meeting(Date date, Time time, String label, boolean repeating, Integer repetitionInterval, Date reminder, List<String> emailAddressesOfAttendees) {
-        super(date, time, label, repeating, repetitionInterval, reminder);
+    public Meeting(LocalDateTime dateTime, String label, boolean repeating, Integer repetitionInterval, LocalDateTime reminder, List<String> emailAddressesOfAttendees) {
+        super(dateTime, label, repeating, repetitionInterval, reminder);
         this.emailAddressesOfAttendees = emailAddressesOfAttendees;
     }
 

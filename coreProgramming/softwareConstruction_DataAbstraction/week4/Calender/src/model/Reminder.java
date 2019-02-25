@@ -1,13 +1,12 @@
 package model;
 
-import java.sql.Time;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class Reminder extends Entry {
     private String note;
 
-    public Reminder(Date date, Time time, String label, boolean repeating, Integer repetitionInterval, String note) {
-        super(date, time, label, repeating, repetitionInterval);
+    public Reminder(LocalDateTime dateTime, String label, boolean repeating, Integer repetitionInterval, String note) {
+        super(dateTime, label, repeating, repetitionInterval);
         this.note = note;
     }
 

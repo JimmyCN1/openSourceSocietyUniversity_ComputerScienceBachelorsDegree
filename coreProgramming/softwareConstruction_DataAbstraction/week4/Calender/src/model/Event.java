@@ -1,19 +1,18 @@
 package model;
 
-import java.sql.Time;
-import java.util.Date;
+import java.time.*;
 
 public class Event extends Entry {
-    private Date reminder;
+    private LocalDateTime reminder;
 
-    public Event(Date date, Time time, String label, boolean repeating, Integer repetitionInterval, Date reminder) {
-        super(date, time, label, repeating, repetitionInterval);
+    public Event(LocalDateTime dateTime, String label, boolean repeating, Integer repetitionInterval , LocalDateTime reminder) {
+        super(dateTime, label, repeating, repetitionInterval);
         this.reminder = reminder;
     }
 
     //getter:
-    public Date getReminder() { return this.reminder; }
+    public LocalDateTime getReminder() { return this.reminder; }
 
     //setter:
-    public void setReminder(Date reminder) { this.reminder = reminder; }
+    public void setReminder(LocalDateTime reminder) { this.reminder = reminder; }
 }

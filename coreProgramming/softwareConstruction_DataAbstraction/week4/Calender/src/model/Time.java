@@ -1,18 +1,18 @@
 //package model;
 //
-//public class Time {
-//    private Integer hour;
-//    private Integer minute;
+//import java.util.OurDateTime;
 //
-//    public Time(Integer hour, Integer minute) {
-//        this.hour = hour;
-//        this.minute = minute;
+//public class OurTime {
+//    private OurDateTime time24;
+//
+//    public OurTime(OurDateTime time24) {
+//        this.time24 =
 //    }
 //
 //    //getters:
 //    public Integer getHour() { return this.hour; }
 //    public Integer getMinute() { return this.minute; }
-//    public String getTime() {
+//    public String getEntrysTime() {
 //        String time = this.hour.toString() + ":" + this.minute.toString();
 //        return time;
 //    }

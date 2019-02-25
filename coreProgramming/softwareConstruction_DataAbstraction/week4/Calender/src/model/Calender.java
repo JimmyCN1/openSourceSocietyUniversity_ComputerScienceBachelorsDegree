@@ -1,27 +1,41 @@
 package model;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
+import java.time.*;
 import java.util.List;
 
 
 public class Calender {
-    private Date currentDate;
+    private String currentDate;
+    private String currentTime;
     private String associatedEmail;
     private List<Entry> entries = new ArrayList<Entry>();
 
-    public Calender(Date currentDate, String associatedEmail) {
+    private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private LocalDateTime date = LocalDateTime.parse(currentDate, dateFormatter);
+
+    private DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+    private LocalDateTime time = LocalDateTime.parse(currentTime, timeFormatter);
+
+
+
+    public Calender(String currentDate, String currentTime, String associatedEmail) {
         this.currentDate = currentDate;
+        this.currentTime = currentTime;
         this.associatedEmail = associatedEmail;
+        this.entries = getEntries();
     }
 
     //getters:
-    public Date getCurrentDate() { return this.currentDate; }
+    public LocalDateTime getDate() { return this.date; }
+    public LocalDateTime getTime() { return this.time; }
     public String getAssociatedEmail() { return this.associatedEmail; }
     public List<Entry> getEntries() { return this.entries; }
 
     //setters:
-    public void setCurrentDate(Date currentDate) { this.currentDate = currentDate; }
+    public void setDate(LocalDateTime date) { this.date = date; }
+    public void setTime(LocalDateTime time) { this.time = time; }
     public void setAssociatedEmail(String associatedEmail) { this.associatedEmail = associatedEmail; }
 
     //REQUIRES: list already in chronological order
@@ -34,7 +48,7 @@ public class Calender {
         }
         if (!this.entries.contains(entry)) {
             for (Integer i = 0; i < this.entries.size(); i++) {
-                if (entry.getDate().before(this.getEntries().get(i).getDate())) {
+                if (entry.getEntrysDate().before(this.getEntries().get(i).getEntrysDate())) {
                     this.entries.add(i, entry);
                     break;
                 }
@@ -58,13 +72,13 @@ public class Calender {
 
     //REQUIRES: list must not be empty
     //EFFECTS: prints out every entry in the list
-    public void printEntries() {
-        if (this.entries.size() != 0) {
-            for (Entry e : this.entries) {
-                System.out.println("Date: " + e.getDate() + "\nTime: " + e.getTime() + "\nLabel: " + e.getLabel() + "\n");
-            }
-        }
-    }
+//    public void printEntries() {
+//        if (this.entries.size() != 0) {
+//            for (Entry e : this.entries) {
+//                System.out.println("OurDateTime: " + e.getEntrysDate() + "\nTime: " + e.getEntrysTime() + "\nLabel: " + e.getLabel() + "\n");
+//            }
+//        }
+//    }
 
     //REQUIRES: list must already be in chronological order
     //MODIFIES: this
