@@ -6,10 +6,10 @@ import java.util.List;
 public class CellPhone implements Traceable {
     private Person person;
     private String locationOfCellPhone;
+    private Call call;
     private List<Call> calls;
 
-    public CellPhone(Person p, String location) {
-        this.person = p;
+    public CellPhone(String location) {
         this.locationOfCellPhone = location;
         this.calls = new ArrayList<Call>();
     }
@@ -26,5 +26,41 @@ public class CellPhone implements Traceable {
     @Override
     public void track() {
         System.out.println("Tracking... " + this);
+    }
+
+    //MODIFIES: this
+    //EFFECTS: adds given call to the list of calls made by the phone
+    public void addCall(Call call) {
+        if (call != null) {
+            calls.add(call);
+        }
+    }
+
+    //MODIFIES: this
+    //EFFECTS: adds a call to the list of calls made by this cell phone
+    public void makeCall() {
+        call = new Call(this, this.locationOfCellPhone);
+        calls.add(call);
+    }
+
+    //EFFECTS: returns list of all calls made from this cell phone
+    public void getCalls() {
+        if (this.calls.size() != 0) {
+            for (Call c : calls) {
+                System.out.println("Source of call: " + c.getLocation());
+            }
+        }
+    }
+
+    //EFFECTS: returns calls made from the passed location
+    public Call getCallFromCalls(String location) {
+        Call retrievedCall = null;
+        for (Call c : calls) {
+            if (c.getLocation() == location) {
+                retrievedCall = c;
+            }
+        }
+
+        return retrievedCall;
     }
 }

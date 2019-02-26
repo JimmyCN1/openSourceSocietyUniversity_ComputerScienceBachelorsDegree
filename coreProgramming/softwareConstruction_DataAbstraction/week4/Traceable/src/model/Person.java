@@ -8,4 +8,8 @@ public class Person {
         this.cellPhone = cp;
         this.fingerPrint = fp;
     }
+
+    //getters:
+    public CellPhone getCellPhone() { return this.cellPhone; }
+    public FingerPrint getFingerPrint() { return this.fingerPrint; }
 }
