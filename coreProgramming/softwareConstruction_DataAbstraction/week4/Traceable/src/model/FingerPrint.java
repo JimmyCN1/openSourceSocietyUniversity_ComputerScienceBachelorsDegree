@@ -4,7 +4,8 @@ public class FingerPrint implements Traceable {
     private Person person;
     private String policePrecintContainingFingerPrints;
 
-    public FingerPrint(String precinct) {
+    public FingerPrint(Person person, String precinct) {
+        this.person = person;
         this.policePrecintContainingFingerPrints = precinct;
     }
 

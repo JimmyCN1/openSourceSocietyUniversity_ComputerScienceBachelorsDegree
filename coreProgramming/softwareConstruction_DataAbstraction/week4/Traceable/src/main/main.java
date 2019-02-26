@@ -7,9 +7,12 @@ import model.Person;
 
 public class main {
     public static void main(String[] args) {
+        Person p1 = null;
+
         CellPhone cp1 = new CellPhone("Singapore");
-        FingerPrint fp1 = new FingerPrint("LA");
-        Person p1 = new Person(cp1, fp1);
+        FingerPrint fp1 = new FingerPrint(null,"LA");
+        p1 = new Person(cp1, fp1);
+        p1.setFingerPrint(fp1);
 
         Call c1 = new Call(cp1,"England");
         Call c2 = new Call(cp1,"America");

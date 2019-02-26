@@ -12,4 +12,7 @@ public class Person {
     //getters:
     public CellPhone getCellPhone() { return this.cellPhone; }
     public FingerPrint getFingerPrint() { return this.fingerPrint; }
+
+    //setters:
+    public void setFingerPrint(FingerPrint fp) { this.fingerPrint = fp; }
 }
