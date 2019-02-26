@@ -11,6 +11,8 @@ public class Calender {
     private String associatedEmail;
     private List<Entry> entries = new ArrayList<Entry>();
 
+    private Reminder reminder;
+
     public Calender(String associatedEmail) {
         setDate();
         setTime();
@@ -33,7 +35,6 @@ public class Calender {
     //MODIFIES: this
     //EFFECTS: adds one entry to the list of entries in chronological order
     public void addEntry(Entry entry) {
-        List<Entry> newEntryList = new ArrayList<Entry>();
         boolean added = false;
         if (this.entries.size() == 0) {
             this.entries.add(entry);

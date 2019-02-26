@@ -12,7 +12,7 @@
 //    //getters:
 //    public Integer getHour() { return this.hour; }
 //    public Integer getMinute() { return this.minute; }
-//    public String getEntrysTime() {
+//    public String getStringTime() {
 //        String time = this.hour.toString() + ":" + this.minute.toString();
 //        return time;
 //    }

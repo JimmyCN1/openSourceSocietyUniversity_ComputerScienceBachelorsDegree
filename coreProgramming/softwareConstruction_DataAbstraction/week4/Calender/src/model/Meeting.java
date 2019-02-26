@@ -6,8 +6,8 @@ import java.util.List;
 public class Meeting extends Event {
     private List<String> emailAddressesOfAttendees = new ArrayList<String>();
 
-    public Meeting(String date, String time, String label, boolean repeating, Integer repetitionInterval, List<String> emailAddressesOfAttendees) {
-        super(date, time, label, repeating, repetitionInterval);
+    public Meeting(Calender calender, String date, String time, String label, boolean repeating, Integer repetitionInterval, List<String> emailAddressesOfAttendees) {
+        super(calender, date, time, label, repeating, repetitionInterval);
         this.emailAddressesOfAttendees = emailAddressesOfAttendees;
     }
 
