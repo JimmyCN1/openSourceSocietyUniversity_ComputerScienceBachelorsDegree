@@ -11,9 +11,9 @@ public class main {
     public static void main(String[] args) {
         Calender calender = new Calender("123@gmail.com");
 
-//        Entry bday1 = new Event(calender,"2019-04-19","00:00","My Birthday",false,0);
-//        Entry bday2 = new Event(calender,"2019-03-11","07:00","bro1 bday",true,365);
-//        Entry bday3 = new Event(calender,"2019-03-18","16:00","bro2 bday",true,366);
+        Entry bday1 = new Event(calender,"2019-04-19","00:00","My Birthday",false,0);
+        Entry bday2 = new Event(calender,"2019-03-11","07:00","bro1 bday",true,365);
+        Entry bday3 = new Event(calender,"2019-03-18","16:00","bro2 bday",true,366);
 
         Entry meeting1 = new Meeting(calender ,"2019-08-11", "08:00", "tyre meeting", true, 7,
                 new ArrayList<String>(Arrays.asList("123@meme.com", "456@meme.com", "789@meme.com")));
@@ -28,7 +28,10 @@ public class main {
         Entry firstEntry = calender.getFirstEntry();
         calender.printEntries();
         calender.removeEntry(reminder3);
-        Entry entryWithLabel = calender.getEntryWithLabel("cake meeting");
+        Entry entryWithLabel = calender.getEntryWithLabel("donday");
+        System.out.println(firstEntry.getLabel());
+        System.out.println(entryWithLabel.getLabel());
+        System.out.println("");
 
 
         System.out.println(((Meeting) meeting1).getEmailAddressesOfAttendees());
@@ -40,10 +43,12 @@ public class main {
         System.out.println(m);
         m.removeEmailAddressesOfAttendees("456@meme.com");
         m.sendInvitations();
+        System.out.println("");
+
+
+        System.out.println(calender.getCurrentDate());
+        System.out.println(calender.getCurrentTime());
+        System.out.println(calender.getAssociatedEmail());
     }
 
-
-    public void addRemindersToCalender(Reminder reminder) {
-
-    }
 }

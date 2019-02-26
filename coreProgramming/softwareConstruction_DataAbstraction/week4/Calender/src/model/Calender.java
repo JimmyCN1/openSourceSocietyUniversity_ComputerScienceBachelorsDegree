@@ -11,8 +11,6 @@ public class Calender {
     private String associatedEmail;
     private List<Entry> entries = new ArrayList<Entry>();
 
-    private Reminder reminder;
-
     public Calender(String associatedEmail) {
         setDate();
         setTime();
@@ -72,9 +70,21 @@ public class Calender {
     public void printEntries() {
         if (this.entries.size() != 0) {
             for (Entry e : this.entries) {
-                System.out.println("Date: " + e.getDate() + "\nTime: " + e.getTime() + "\nLabel: " + e.getLabel() + "\n");
+                this.printEntry(e);
+//                System.out.println("Date: " + e.getDate() + "\nTime: " + e.getTime() + "\nLabel: " + e.getLabel() + "\n");
             }
         }
+    }
+
+    //REQUIRES: entry not null
+    //EFFECTS: prints out every detail of an entry
+    public void printEntry(Entry entry) {
+        System.out.println(
+                "Date: " + entry.getDate() +
+                "\nTime: " + entry.getTime() +
+                "\nLabel: " + entry.getLabel() +
+                "\nRepeating: " + entry.getRepeating() +
+                "\nRepitition Interval: " + entry.getRepetitionInterval() + " days\n");
     }
 
     //REQUIRES: list must already be in chronological order

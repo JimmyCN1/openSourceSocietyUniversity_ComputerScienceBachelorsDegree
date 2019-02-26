@@ -15,7 +15,7 @@ public class Event extends Entry {
 //    //getter:
 //    public LocalDate getReminderDate() { return this.reminderDate; }
 
-    //MODIFES: this
+    //MODIFIES: this
     //EFFECTS: sets a reminderDate 3 days before the event
     public void makeReminder() {
         Reminder reminder = null;
